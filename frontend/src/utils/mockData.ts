@@ -1,0 +1,351 @@
+// FD STORE - Dados Mock Completos do Ecossistema
+
+import type { Product, AICharacter, Stamp, Collection, Order, User } from '../types';
+
+// ========== PERSONAGENS IA ==========
+export const mockAICharacters: AICharacter[] = [
+  {
+    id: 'char-001',
+    name: 'DYNAMIC WARRIOR',
+    imageUrl: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=400',
+    style: 'urban',
+    description: 'Guerreiro urbano com estética street autoritária',
+    tags: ['street', 'urban', 'power', 'authority'],
+    usageCount: 234,
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'char-002',
+    name: 'CYBER KING',
+    imageUrl: 'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=400',
+    style: 'futuristic',
+    description: 'Rei cibernético com visual futurista premium',
+    tags: ['futuristic', 'tech', 'premium', 'cyber'],
+    usageCount: 189,
+    createdAt: new Date('2024-01-20'),
+  },
+  {
+    id: 'char-003',
+    name: 'GOLD LION',
+    imageUrl: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=400',
+    style: 'premium',
+    description: 'Leão dourado símbolo de autoridade e poder',
+    tags: ['premium', 'luxury', 'power', 'gold'],
+    usageCount: 312,
+    createdAt: new Date('2024-02-01'),
+  },
+  {
+    id: 'char-004',
+    name: 'STREET PHOENIX',
+    imageUrl: 'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=400',
+    style: 'dynamic',
+    description: 'Fênix das ruas, renascimento e atitude',
+    tags: ['dynamic', 'street', 'rebirth', 'attitude'],
+    usageCount: 267,
+    createdAt: new Date('2024-02-10'),
+  },
+];
+
+// ========== ESTAMPAS ==========
+export const mockStamps: Stamp[] = [
+  {
+    id: 'stamp-001',
+    name: 'FORTITUDE',
+    imageUrl: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=300',
+    category: 'premium',
+    tags: ['gold', 'premium', 'power'],
+    aiGenerated: false,
+    createdAt: new Date('2024-01-10'),
+  },
+  {
+    id: 'stamp-002',
+    name: 'URBAN FORCE',
+    imageUrl: 'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=300',
+    category: 'street',
+    tags: ['street', 'urban', 'force'],
+    aiGenerated: false,
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    id: 'stamp-003',
+    name: 'MINIMAL AUTHORITY',
+    imageUrl: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=300',
+    category: 'minimal',
+    tags: ['minimal', 'clean', 'authority'],
+    aiGenerated: true,
+    createdAt: new Date('2024-02-01'),
+  },
+  {
+    id: 'stamp-004',
+    name: 'SPORT DYNAMIC',
+    imageUrl: 'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=300',
+    category: 'sport',
+    tags: ['sport', 'dynamic', 'energy'],
+    aiGenerated: true,
+    createdAt: new Date('2024-02-15'),
+  },
+];
+
+// ========== PRODUTOS ==========
+export const mockProducts: Product[] = [
+  {
+    id: 'prod-001',
+    name: 'CAMISETA AUTHORITY BLACK',
+    category: 'camisetas',
+    description: 'Camiseta premium FD com estampa exclusiva AUTHORITY. Tecido 100% algodão premium, corte autoritário.',
+    basePrice: 129.90,
+    images: [
+      'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
+      'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=800',
+    ],
+    sizes: ['P', 'M', 'G', 'GG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+      { name: 'Branco', hex: '#ffffff', available: true },
+    ],
+    stamp: mockStamps[0],
+    available: true,
+    featured: true,
+    isNew: true,
+    isPremium: true,
+    stockQuantity: 45,
+    tags: ['premium', 'authority', 'bestseller'],
+    createdAt: new Date('2024-11-01'),
+  },
+  {
+    id: 'prod-002',
+    name: 'MOLETOM FORT DYNAMIC GOLD',
+    category: 'moletons',
+    description: 'Moletom premium com capuz, estampa dourada exclusiva. Conforto e autoridade em uma peça.',
+    basePrice: 249.90,
+    images: [
+      'https://images.unsplash.com/photo-1759972524936-26c44fb258ca?w=800',
+      'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=800',
+    ],
+    sizes: ['P', 'M', 'G', 'GG', 'XG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+      { name: 'Cinza Escuro', hex: '#1a1a1a', available: true },
+    ],
+    stamp: mockStamps[0],
+    available: true,
+    featured: true,
+    isNew: true,
+    isPremium: true,
+    stockQuantity: 28,
+    tags: ['premium', 'moletom', 'gold', 'bestseller'],
+    createdAt: new Date('2024-11-15'),
+  },
+  {
+    id: 'prod-003',
+    name: 'CAMISETA URBAN FORCE',
+    category: 'camisetas',
+    description: 'Estampa street exclusiva. Para quem veste autoridade nas ruas.',
+    basePrice: 109.90,
+    images: [
+      'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
+    ],
+    sizes: ['PP', 'P', 'M', 'G', 'GG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+      { name: 'Branco', hex: '#ffffff', available: true },
+      { name: 'Cinza', hex: '#808080', available: false },
+    ],
+    stamp: mockStamps[1],
+    available: true,
+    featured: false,
+    isNew: false,
+    isPremium: false,
+    stockQuantity: 67,
+    tags: ['street', 'urban', 'force'],
+    createdAt: new Date('2024-10-10'),
+  },
+  {
+    id: 'prod-004',
+    name: 'UNIFORME CORPORATIVO FD',
+    category: 'uniformes',
+    description: 'Uniforme profissional com identidade FD. Personalizável com logo da empresa.',
+    basePrice: 159.90,
+    images: [
+      'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=800',
+    ],
+    sizes: ['P', 'M', 'G', 'GG', 'XG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+      { name: 'Branco', hex: '#ffffff', available: true },
+    ],
+    available: true,
+    featured: false,
+    isNew: false,
+    isPremium: false,
+    stockQuantity: 120,
+    tags: ['uniforme', 'corporativo', 'personalizável'],
+    createdAt: new Date('2024-09-01'),
+  },
+  {
+    id: 'prod-005',
+    name: 'CAMISETA FD MINIMAL',
+    category: 'camisetas',
+    description: 'Design minimalista com logo FD. Autoridade no essencial.',
+    basePrice: 99.90,
+    images: [
+      'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
+    ],
+    sizes: ['P', 'M', 'G', 'GG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+      { name: 'Branco', hex: '#ffffff', available: true },
+    ],
+    stamp: mockStamps[2],
+    available: true,
+    featured: false,
+    isNew: false,
+    isPremium: false,
+    stockQuantity: 89,
+    tags: ['minimal', 'essential', 'clean'],
+    createdAt: new Date('2024-08-20'),
+  },
+  {
+    id: 'prod-006',
+    name: 'MOLETOM CYBER KING',
+    category: 'moletons',
+    description: 'Moletom com estampa futurística exclusiva. Tecnologia e estilo.',
+    basePrice: 229.90,
+    images: [
+      'https://images.unsplash.com/photo-1759972524936-26c44fb258ca?w=800',
+    ],
+    sizes: ['P', 'M', 'G', 'GG'],
+    colors: [
+      { name: 'Preto', hex: '#000000', available: true },
+    ],
+    available: true,
+    featured: true,
+    isNew: true,
+    isPremium: true,
+    stockQuantity: 34,
+    tags: ['futuristic', 'premium', 'tech'],
+    createdAt: new Date('2024-12-01'),
+  },
+];
+
+// ========== COLEÇÕES ==========
+export const mockCollections: Collection[] = [
+  {
+    id: 'col-001',
+    name: 'AUTHORITY COLLECTION',
+    description: 'Coleção exclusiva que une poder, autoridade e estilo premium.',
+    theme: 'premium',
+    products: [mockProducts[0], mockProducts[1]],
+    character: mockAICharacters[2],
+    stamps: [mockStamps[0]],
+    coverImage: 'https://images.unsplash.com/photo-1580656940647-8854a00547f0?w=1200',
+    aiGenerated: false,
+    createdAt: new Date('2024-11-01'),
+  },
+  {
+    id: 'col-002',
+    name: 'STREET FORCE',
+    description: 'A força das ruas em cada peça. Coleção urbana autêntica.',
+    theme: 'street',
+    products: [mockProducts[2]],
+    character: mockAICharacters[3],
+    stamps: [mockStamps[1]],
+    coverImage: 'https://images.unsplash.com/photo-1760736534395-f020b0500f3b?w=1200',
+    aiGenerated: true,
+    createdAt: new Date('2024-10-15'),
+  },
+  {
+    id: 'col-003',
+    name: 'CYBER FUTURE',
+    description: 'O futuro veste FD. Coleção futurística com IA.',
+    theme: 'futuristic',
+    products: [mockProducts[5]],
+    character: mockAICharacters[1],
+    stamps: [mockStamps[3]],
+    coverImage: 'https://images.unsplash.com/photo-1759972524936-26c44fb258ca?w=1200',
+    aiGenerated: true,
+    createdAt: new Date('2024-12-01'),
+  },
+];
+
+// ========== USUÁRIO MOCK ==========
+export const mockUser: User = {
+  id: 'user-001',
+  name: 'Cliente FD Premium',
+  email: 'cliente@fdstore.com',
+  phone: '(11) 99999-9999',
+  cpf: '000.000.000-00',
+  addresses: [
+    {
+      id: 'addr-001',
+      street: 'Rua da Autoridade',
+      number: '123',
+      complement: 'Apto 45',
+      neighborhood: 'Centro',
+      city: 'São Paulo',
+      state: 'SP',
+      zipCode: '01000-000',
+      isDefault: true,
+    },
+  ],
+  orders: [],
+  favorites: ['prod-001', 'prod-002', 'prod-005'],
+  createdAt: new Date('2024-01-01'),
+};
+
+// ========== PEDIDOS MOCK ==========
+export const mockOrders: Order[] = [
+  {
+    id: 'order-001',
+    userId: 'user-001',
+    items: [
+      {
+        id: 'item-001',
+        product: mockProducts[0],
+        customization: {
+          productId: 'prod-001',
+          size: 'M',
+          color: { name: 'Preto', hex: '#000000', available: true },
+          stampId: 'stamp-001',
+          quantity: 2,
+        },
+        quantity: 2,
+        subtotal: 259.80,
+      },
+    ],
+    total: 279.80,
+    shippingCost: 20.00,
+    status: 'production',
+    paymentMethod: 'pix',
+    paymentStatus: 'paid',
+    shippingAddress: mockUser.addresses[0],
+    trackingCode: 'FD123456789BR',
+    createdAt: new Date('2024-12-05'),
+    updatedAt: new Date('2024-12-08'),
+  },
+];
+
+// ========== DEPOIMENTOS ==========
+export const mockTestimonials = [
+  {
+    id: 'test-001',
+    name: 'Rafael Silva',
+    text: 'Qualidade impecável! A FD Store eleva o streetwear brasileiro a outro nível.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+  },
+  {
+    id: 'test-002',
+    name: 'Mariana Costa',
+    text: 'Atendimento premium e produtos de altíssima qualidade. Virei cliente fiel!',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+  },
+  {
+    id: 'test-003',
+    name: 'Lucas Ferreira',
+    text: 'A personalização é incrível. Criamos uniformes únicos para nossa empresa.',
+    rating: 5,
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+  },
+];
