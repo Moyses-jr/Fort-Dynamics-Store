@@ -1,0 +1,73 @@
+# 🎯 FD STORE - CÓDIGO COMPLETO DO SITE
+# E-COMMERCE COMPLETO | FORT DYNAMIC
+
+================================================================================
+ESTRUTURA DO PROJETO
+================================================================================
+
+/
+├── App.tsx                          # ⭐ Componente Principal
+├── types/index.ts                   # 📦 Tipos TypeScript
+├── data/mockData.ts                 # 💾 Dados Mock
+├── styles/globals.css               # 🎨 Estilos Globais
+├── components/
+│   ├── Header.tsx                   # 🔝 Cabeçalho com Navegação
+│   ├── Hero.tsx                     # 🎬 Hero Section
+│   ├── ProductManager.tsx           # 🛍️ Gerenciador Linha de Moda
+│   ├── UniformCustomizer.tsx        # 👕 Customizador de Uniformes
+│   ├── ProductGrid.tsx              # 📊 Grid de Produtos
+│   ├── ProductCard.tsx              # 🎴 Card de Produto
+│   ├── Collections.tsx              # 📚 Coleções
+│   ├── Cart.tsx                     # 🛒 Carrinho de Compras
+│   ├── QuickView.tsx                # 👁️ Visualização Rápida
+│   ├── UserProfile.tsx              # 👤 Perfil do Usuário
+│   ├── Testimonials.tsx             # 💬 Depoimentos
+│   ├── StatsPanel.tsx               # 📈 Painel de Estatísticas
+│   └── Footer.tsx                   # 🔚 Rodapé
+└── utils/
+    └── aiEngine.ts                  # ⚙️ Utilitários
+
+================================================================================
+
+## 🎨 CORES DA MARCA
+
+- Preto Principal: #000000
+- Branco: #ffffff  
+- Dourado: #d4af37
+- Dourado Claro: #f0d98a
+- Dourado Escuro: #b8941f
+- Cinza: #1a1a1a
+
+================================================================================
+
+## 🚀 FUNCIONALIDADES PRINCIPAIS
+
+1. ✅ LINHA DE MODA
+   - Gerenciamento completo de produtos
+   - Adicionar/Editar/Excluir produtos
+   - Variedades: Modelos, Cores, Tecidos, Tamanhos
+   - Interface de administração integrada
+
+2. ✅ UNIFORMES PERSONALIZADOS
+   - Upload de artes (frente e verso)
+   - 3 mockups lisos disponíveis
+   - Preview em tempo real
+   - Controles de tamanho e rotação
+   - 5 cores de tecido
+
+3. ✅ E-COMMERCE COMPLETO
+   - Carrinho de compras
+   - Sistema de favoritos
+   - Área do cliente
+   - Sistema de pedidos
+   - Quick View de produtos
+
+4. ✅ COLEÇÕES E CATÁLOGO
+   - Lançamentos
+   - Coleções temáticas
+   - Premium Collection
+   - Categorização por tipo
+
+================================================================================
+📄 ARQUIVO 1: /App.tsx
+================================================================================

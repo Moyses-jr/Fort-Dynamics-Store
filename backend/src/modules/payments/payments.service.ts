@@ -32,8 +32,20 @@ export class PaymentsService {
 
     await prisma.payment.upsert({
       where: { orderId },
-      update: { providerId: pixData.paymentId, method: 'pix', status: 'pending', metadata: pixData as unknown as JsonValue },
-      create: { orderId, providerId: pixData.paymentId, method: 'pix', status: 'pending', amount: order.total, metadata: pixData as unknown as JsonValue },
+      update: {
+        providerId: pixData.paymentId,
+        method: 'pix',
+        status: 'pending',
+        metadata: pixData as JsonValue,
+      },
+      create: {
+        orderId,
+        providerId: pixData.paymentId,
+        method: 'pix',
+        status: 'pending',
+        amount: order.total,
+        metadata: pixData as unknown as JsonValue,
+      },
     })
 
     return pixData
@@ -62,8 +74,20 @@ export class PaymentsService {
 
     const payment = await prisma.payment.upsert({
       where: { orderId },
-      update: { providerId: cardData.paymentId, method: 'credit_card', status: cardData.status, metadata: cardData as unknown as JsonValue },
-      create: { orderId, providerId: cardData.paymentId, method: 'credit_card', status: cardData.status, amount: order.total, metadata: cardData as unknown as JsonValue },
+      update: {
+        providerId: cardData.paymentId,
+        method: 'credit_card',
+        status: cardData.status,
+        metadata: cardData as unknown as JsonValue,
+      },
+      create: {
+        orderId,
+        providerId: cardData.paymentId,
+        method: 'credit_card',
+        status: cardData.status,
+        amount: order.total,
+        metadata: cardData as unknown as JsonValue,
+      },
     })
 
     if (cardData.status === 'approved') await this.confirmOrder(orderId)
@@ -88,14 +112,32 @@ export class PaymentsService {
         firstName: user.name.split(' ')[0],
         lastName: user.name.split(' ').slice(1).join(' ') || 'Store',
         cpf: user.cpf ?? undefined,
-        address: { street: address.street, number: address.number, city: address.city, state: address.state, zipCode: address.zipCode },
+        address: {
+          street: address.street,
+          number: address.number,
+          city: address.city,
+          state: address.state,
+          zipCode: address.zipCode,
+        },
       },
     })
 
     await prisma.payment.upsert({
       where: { orderId },
-      update: { providerId: boletoData.paymentId, method: 'boleto', status: 'pending', metadata: boletoData as unknown as JsonValue },
-      create: { orderId, providerId: boletoData.paymentId, method: 'boleto', status: 'pending', amount: order.total, metadata: boletoData as unknown as JsonValue },
+      update: {
+        providerId: boletoData.paymentId,
+        method: 'boleto',
+        status: 'pending',
+        metadata: boletoData as unknown as JsonValue,
+      },
+      create: {
+        orderId,
+        providerId: boletoData.paymentId,
+        method: 'boleto',
+        status: 'pending',
+        amount: order.total,
+        metadata: boletoData as unknown as JsonValue,
+      },
     })
 
     return boletoData
@@ -110,7 +152,10 @@ export class PaymentsService {
 
     const providerId = String(data.id)
     const payment = await prisma.payment.findFirst({ where: { providerId } })
-    if (!payment) { logger.warn(`Pagamento não encontrado: ${providerId}`); return }
+    if (!payment) {
+      logger.warn(`Pagamento não encontrado: ${providerId}`)
+      return
+    }
 
     const { MercadoPagoConfig, Payment: MpPayment } = await import('mercadopago')
     const mpClient = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN! })
@@ -120,7 +165,11 @@ export class PaymentsService {
 
     await prisma.payment.update({
       where: { id: payment.id },
-      data: { status, paidAt: status === 'approved' ? new Date() : undefined, metadata: mpData as unknown as JsonValue },
+      data: {
+        status,
+        paidAt: status === 'approved' ? new Date() : undefined,
+        metadata: mpData as unknown as JsonValue,
+      },
     })
 
     if (status === 'approved') await this.confirmOrder(payment.orderId)
@@ -138,7 +187,11 @@ export class PaymentsService {
   private async confirmOrder(orderId: string) {
     await prisma.order.update({
       where: { id: orderId },
-      data: { status: 'confirmed', paymentStatus: 'paid', statusHistory: { create: { status: 'confirmed', note: 'Pagamento confirmado' } } },
+      data: {
+        status: 'confirmed',
+        paymentStatus: 'paid',
+        statusHistory: { create: { status: 'confirmed', note: 'Pagamento confirmado' } },
+      },
     })
     logger.info(`Pedido confirmado: ${orderId}`)
   }
@@ -148,10 +201,17 @@ export class PaymentsService {
     await prisma.$transaction(async (tx: TxClient) => {
       await tx.order.update({
         where: { id: orderId },
-        data: { status: 'cancelled', paymentStatus: 'failed', statusHistory: { create: { status: 'cancelled', note: 'Pagamento recusado' } } },
+        data: {
+          status: 'cancelled',
+          paymentStatus: 'failed',
+          statusHistory: { create: { status: 'cancelled', note: 'Pagamento recusado' } },
+        },
       })
       for (const item of items) {
-        await tx.productVariant.update({ where: { id: item.variantId }, data: { stock: { increment: item.quantity } } })
+        await tx.productVariant.update({
+          where: { id: item.variantId },
+          data: { stock: { increment: item.quantity } },
+        })
       }
     })
     logger.info(`Pedido cancelado por falha: ${orderId}`)

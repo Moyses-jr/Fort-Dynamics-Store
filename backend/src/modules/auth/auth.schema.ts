@@ -9,12 +9,12 @@ export const registerSchema = z.object({
     .string()
     .regex(/^\d{11}$/, 'CPF deve ter 11 dígitos (sem pontuação)')
     .optional(),
-  password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres').max(72, 'Senha muito longa'),
+  password: z.string().min(3, 'Senha deve ter ao menos 3 caracteres').max(72, 'Senha muito longa'),
 })
 
 export const loginSchema = z.object({
   email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha obrigatória'),
+  password: z.string().min(3, 'Senha deve ter ao menos 3 caracteres'),
 })
 
 export const forgotPasswordSchema = z.object({
@@ -23,7 +23,7 @@ export const forgotPasswordSchema = z.object({
 
 export const resetPasswordSchema = z.object({
   token: z.string().min(1),
-  password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres'),
+  password: z.string().min(3, 'Senha deve ter ao menos 3 caracteres'),
 })
 
 export type RegisterDto = z.infer<typeof registerSchema>
