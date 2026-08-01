@@ -2,7 +2,7 @@
 import { prisma } from '../../config/database'
 import { NotFoundError, AppError } from '../../shared/errors/AppError'
 import type { AddToCartDto, UpdateCartItemDto } from './cart.schema'
-import type { JsonValue } from '../../shared/types/prisma'
+import { Prisma } from '@prisma/client'
 
 interface CartItemWithRelations {
   customization: { printOption: string } | null
@@ -44,7 +44,10 @@ export class CartService {
       }
     })
 
-    const subtotal = (enriched as Array<{ subtotal: number }>).reduce((sum: number, item: { subtotal: number }) => sum + item.subtotal, 0)
+    const subtotal = (enriched as Array<{ subtotal: number }>).reduce(
+      (sum: number, item: { subtotal: number }) => sum + item.subtotal,
+      0,
+    )
     const shipping = subtotal >= 299 ? 0 : 20
     const total = subtotal + shipping
 
@@ -62,8 +65,7 @@ export class CartService {
       throw new AppError('Variante não pertence ao produto informado', 400, 'INVALID_VARIANT')
     if (!variant.product.available)
       throw new AppError('Produto indisponível', 400, 'PRODUCT_UNAVAILABLE')
-    if (!variant.available)
-      throw new AppError('Variante indisponível', 400, 'VARIANT_UNAVAILABLE')
+    if (!variant.available) throw new AppError('Variante indisponível', 400, 'VARIANT_UNAVAILABLE')
     if (variant.product.requiresBudget)
       throw new AppError('Produto requer orçamento', 400, 'REQUIRES_BUDGET')
     if (variant.stock < data.quantity) {
@@ -80,7 +82,7 @@ export class CartService {
       const customization = await prisma.customization.create({
         data: {
           ...data.customization,
-          extra: (data.customization.extra ?? null) as JsonValue,
+          extra: (data.customization.extra ?? null) as Prisma.InputJsonValue,
         },
       })
       customizationId = customization.id

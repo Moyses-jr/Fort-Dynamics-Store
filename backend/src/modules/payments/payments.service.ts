@@ -1,11 +1,10 @@
 // src/modules/payments/payments.service.ts
 import { prisma } from '../../config/database'
-import type { PrismaClient } from '@prisma/client'
+import type { Prisma, PrismaClient } from '@prisma/client'
 import { NotFoundError, AppError, ForbiddenError } from '../../shared/errors/AppError'
 import { logger } from '../../config/logger'
 import { createPixPayment, createCardPayment, createBoletoPayment } from './mercadopago.provider'
 import type { CardPaymentDto } from './payments.schema'
-import type { JsonValue } from '../../shared/types/prisma'
 
 type TxClient = Omit<
   PrismaClient,
@@ -36,7 +35,7 @@ export class PaymentsService {
         providerId: pixData.paymentId,
         method: 'pix',
         status: 'pending',
-        metadata: pixData as JsonValue,
+        metadata: pixData as Prisma.InputJsonValue,
       },
       create: {
         orderId,
@@ -44,7 +43,7 @@ export class PaymentsService {
         method: 'pix',
         status: 'pending',
         amount: order.total,
-        metadata: pixData as unknown as JsonValue,
+        metadata: pixData as Prisma.InputJsonValue,
       },
     })
 
@@ -78,7 +77,7 @@ export class PaymentsService {
         providerId: cardData.paymentId,
         method: 'credit_card',
         status: cardData.status,
-        metadata: cardData as unknown as JsonValue,
+        metadata: cardData as Prisma.InputJsonValue,
       },
       create: {
         orderId,
@@ -86,7 +85,7 @@ export class PaymentsService {
         method: 'credit_card',
         status: cardData.status,
         amount: order.total,
-        metadata: cardData as unknown as JsonValue,
+        metadata: cardData as Prisma.InputJsonValue,
       },
     })
 
@@ -128,7 +127,7 @@ export class PaymentsService {
         providerId: boletoData.paymentId,
         method: 'boleto',
         status: 'pending',
-        metadata: boletoData as unknown as JsonValue,
+        metadata: boletoData as Prisma.InputJsonValue,
       },
       create: {
         orderId,
@@ -136,7 +135,7 @@ export class PaymentsService {
         method: 'boleto',
         status: 'pending',
         amount: order.total,
-        metadata: boletoData as unknown as JsonValue,
+        metadata: boletoData as Prisma.InputJsonValue,
       },
     })
 
@@ -168,7 +167,7 @@ export class PaymentsService {
       data: {
         status,
         paidAt: status === 'approved' ? new Date() : undefined,
-        metadata: mpData as unknown as JsonValue,
+        metadata: mpData as unknown as Prisma.InputJsonValue,
       },
     })
 

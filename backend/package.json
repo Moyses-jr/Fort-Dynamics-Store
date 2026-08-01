@@ -1,6 +1,6 @@
 {
-  "name": "fd-store-api",
-  "version": "1.0.0",
+  "name": "API-FDStore",
+  "version": "1.0",
   "description": "FD Store - Backend API",
   "main": "dist/app.js",
   "scripts": {

@@ -2,6 +2,7 @@
 import { MercadoPagoConfig, Payment as MpPayment } from 'mercadopago'
 import { env } from '../../config/env'
 import { PaymentError } from '../../shared/errors/AppError'
+import { Prisma } from '@prisma/client'
 
 const client = new MercadoPagoConfig({
   accessToken: env.MP_ACCESS_TOKEN,
@@ -10,7 +11,10 @@ const client = new MercadoPagoConfig({
 
 const mpPayment = new MpPayment(client)
 
-export interface PixResult {
+type JsonObject = {
+  [key: string]: Prisma.InputJsonValue
+}
+export interface PixResult extends JsonObject {
   paymentId: string
   qrCode: string
   qrCodeBase64: string
@@ -18,13 +22,13 @@ export interface PixResult {
   expiresAt: string
 }
 
-export interface CardResult {
+export interface CardResult extends JsonObject {
   paymentId: string
   status: string
   statusDetail: string
 }
 
-export interface BoletoResult {
+export interface BoletoResult extends JsonObject {
   paymentId: string
   barcodeContent: string
   ticketUrl: string
