@@ -42,7 +42,6 @@ const productVariantSchema = z.object({
 export const createProductSchema = z.object({
   categoryId: z.string().uuid(),
   name: z.string().min(1).max(200),
-  slug: z.string().min(1).max(220),
   description: z.string().min(1),
   fabricType: z.string().min(1),
   priceFront: z.number().min(0),

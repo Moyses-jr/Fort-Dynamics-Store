@@ -22,7 +22,8 @@
 
 export interface ProductFD {
   id: string;
-  category: 'camisetas' | 'moletons';
+  category: string;
+  categoryLabel?: string;
   name: string;
   type: string;
   fabric: string;

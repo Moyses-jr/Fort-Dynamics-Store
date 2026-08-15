@@ -1,7 +1,8 @@
 // src/modules/products/products.service.ts
 import { productsRepository } from './products.repository'
-import { NotFoundError } from '../../shared/errors/AppError'
+import { NotFoundError, ConflictError } from '../../shared/errors/AppError'
 import { getPagination, buildPaginatedResponse } from '../../shared/utils/pagination'
+import { slugify } from '../../shared/utils/slug'
 import type { Request } from 'express'
 import type { ProductQueryDto, CreateProductDto, UpdateProductDto } from './products.schema'
 
@@ -34,13 +35,29 @@ export class ProductsService {
   }
 
   async create(data: CreateProductDto) {
-    return productsRepository.create(data)
+    const slug = await this.generateUniqueSlug(data.name)
+    return productsRepository.create({ ...data, slug })
   }
 
   async update(id: string, data: UpdateProductDto) {
     const exists = await productsRepository.findById(id)
     if (!exists) throw new NotFoundError('Produto')
-    return productsRepository.update(id, data)
+
+    const payload: UpdateProductDto & { slug?: string } = { ...data }
+    if (data.name && data.name !== exists.name) {
+      payload.slug = await this.generateUniqueSlug(data.name, id)
+    }
+
+    return productsRepository.update(id, payload)
+  }
+
+  private async generateUniqueSlug(name: string, ignoreId?: string) {
+    const slug = slugify(name)
+    const existing = await productsRepository.findBySlug(slug)
+    if (existing && existing.id !== ignoreId) {
+      throw new ConflictError('Já existe um produto com um nome muito similar')
+    }
+    return slug
   }
 
   async remove(id: string) {

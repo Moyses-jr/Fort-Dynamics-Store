@@ -1,4 +1,4 @@
-import { Menu, Search, ShoppingCart, User, X } from "lucide-react";
+import { Menu, Search, Settings, ShoppingCart, User, X } from "lucide-react";
 import { useState } from "react";
 
 type HeaderProps = {
@@ -9,6 +9,8 @@ type HeaderProps = {
   handleSerchOpen: () => void;
   handleMobileMenuOpen: () => void;
   mobileMenuOpen: boolean;
+  isAdmin?: boolean;
+  onAdminClick?: () => void;
 };
 
 const ActionClients = ({
@@ -19,6 +21,8 @@ const ActionClients = ({
   handleSerchOpen,
   handleMobileMenuOpen,
   mobileMenuOpen,
+  isAdmin,
+  onAdminClick,
 }: HeaderProps) => {
   return (
     <div className="flex items-center gap-4">
@@ -29,6 +33,17 @@ const ActionClients = ({
       >
         <Search className="w-5 h-5" />
       </button>
+
+      {isAdmin && (
+        <button
+          onClick={onAdminClick}
+          className="p-2 hover:text-fd-gold transition-colors"
+          aria-label="Painel Administrativo"
+          title="Painel Administrativo"
+        >
+          <Settings className="w-5 h-5" />
+        </button>
+      )}
 
       <button
         onClick={onLoginClick}

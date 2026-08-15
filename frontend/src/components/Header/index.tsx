@@ -9,6 +9,8 @@ type HeaderProps = {
   onCartClick: () => void;
   onLoginClick: () => void;
   isLoggedIn: boolean;
+  isAdmin?: boolean;
+  onAdminClick?: () => void;
 };
 
 export function Header({
@@ -16,6 +18,8 @@ export function Header({
   onCartClick,
   onLoginClick,
   isLoggedIn,
+  isAdmin,
+  onAdminClick,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
   const [searchOpen, setSearchOpen] = useState<boolean>(false);
@@ -39,6 +43,8 @@ export function Header({
             onCartClick={onCartClick}
             onLoginClick={onLoginClick}
             isLoggedIn={isLoggedIn}
+            isAdmin={isAdmin}
+            onAdminClick={onAdminClick}
             mobileMenuOpen={mobileMenuOpen}
             handleSerchOpen={handleSerchOpen}
             handleMobileMenuOpen={hanldeMobileMenuOpen}

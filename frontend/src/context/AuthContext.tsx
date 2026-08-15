@@ -16,6 +16,23 @@ interface AuthUser {
   isAdmin: boolean;
 }
 
+// Shape retornado pela API (usa "role", não "isAdmin")
+interface ApiUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "ADMIN" | "CUSTOMER";
+}
+
+function toAuthUser(apiUser: ApiUser): AuthUser {
+  return {
+    id: apiUser.id,
+    name: apiUser.name,
+    email: apiUser.email,
+    isAdmin: apiUser.role === "ADMIN",
+  };
+}
+
 interface AuthContextType {
   user: AuthUser | null;
   isLoggedIn: boolean;
@@ -40,8 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     api
-      .get<AuthUser>("/users/me")
-      .then((res) => setUser(res.data))
+      .get<ApiUser>("/users/me")
+      .then((res) => setUser(toAuthUser(res.data)))
       .catch(() => localStorage.removeItem("access_token"))
       .finally(() => setIsLoading(false));
   }, []);
@@ -56,23 +73,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { data } = await api.post<{ user: AuthUser; accessToken: string }>(
+    const { data } = await api.post<{ user: ApiUser; accessToken: string }>(
       "/auth/login",
       { email, password },
     );
     localStorage.setItem("access_token", data.accessToken);
-    setUser(data.user);
+    setUser(toAuthUser(data.user));
   }, []);
 
   const register = useCallback(
     async (name: string, email: string, password: string) => {
-      const { data } = await api.post<{ user: AuthUser; accessToken: string }>(
+      const { data } = await api.post<{ user: ApiUser; accessToken: string }>(
         "/auth/register",
         { name, email, password },
         { withCredentials: true },
       );
       localStorage.setItem("access_token", data.accessToken);
-      setUser(data.user);
+      setUser(toAuthUser(data.user));
     },
     [],
   );

@@ -12,12 +12,35 @@ import {
   Star,
 } from "lucide-react";
 import {
-  catalogoFD,
   opcoesPersonalizacao,
   coresDisponiveis,
   tamanhosDisponiveis,
   type ProductFD,
 } from "../utils/catalogoFD";
+import { useProducts, type ApiProduct } from "../hooks/useProducts";
+
+function mapApiProductToFD(p: ApiProduct): ProductFD {
+  const primaryImage = p.images.find(img => img.isPrimary)?.url ?? p.images[0]?.url ?? "";
+  return {
+    id: p.id,
+    category: p.category.slug,
+    categoryLabel: p.category.name,
+    name: p.name,
+    type: p.fabricType,
+    fabric: p.fabricType,
+    description: p.description,
+    prices: {
+      fronteVerso: p.priceBoth,
+      frente: p.priceFront,
+      verso: p.priceBack,
+    },
+    image: primaryImage,
+    available: p.available,
+    requiresBudget: p.requiresBudget,
+    obs: p.obs ?? undefined,
+    badge: p.badge ?? undefined,
+  };
+}
 
 interface CatalogoFDProps {
   onAddToCart?: (item: any) => void;
@@ -131,8 +154,8 @@ function ProductCard({
         {/* Name */}
         <div>
           <p className="text-[10px] uppercase tracking-[0.2em] text-[#D4B896] mb-1">
-            {product.category === "camisetas" ? "Camiseta" : "Moletom"} ·{" "}
-            {product.type}
+            {product.categoryLabel ?? product.category}
+            {product.type ? ` · ${product.type}` : ""}
           </p>
           <h3
             className="text-xl text-white tracking-wide leading-tight"
@@ -443,16 +466,21 @@ function CustomizationModal({
 }
 
 export function CatalogoFD({ onAddToCart }: CatalogoFDProps) {
-  const [activeCategory, setActiveCategory] = useState<
-    "all" | "camisetas" | "moletons"
-  >("all");
+  const [activeCategory, setActiveCategory] = useState<string>("all");
   const [selectedProduct, setSelectedProduct] = useState<ProductFD | null>(
     null,
   );
   const [showGuia, setShowGuia] = useState(false);
 
-  const camisetas = catalogoFD.filter((p) => p.category === "camisetas");
-  const moletons = catalogoFD.filter((p) => p.category === "moletons");
+  const { products: apiProducts, isLoading } = useProducts({ available: true, limit: 100 });
+  const catalogoFD = apiProducts.map(mapApiProductToFD);
+
+  // Abas de categoria construídas dinamicamente a partir dos produtos cadastrados
+  const categoryTabs = Array.from(
+    new Map(
+      catalogoFD.map(p => [p.category, p.categoryLabel ?? p.category]),
+    ).entries(),
+  );
 
   const filteredProducts =
     activeCategory === "all"
@@ -619,15 +647,18 @@ export function CatalogoFD({ onAddToCart }: CatalogoFDProps) {
         </div>
 
         {/* ─── CATEGORY TABS ─── */}
-        <div className="flex items-stretch gap-0 mb-10 border border-white/10 w-fit">
+        <div className="flex items-stretch gap-0 mb-10 border border-white/10 w-fit flex-wrap">
           {[
             { key: "all", label: "Todos", count: catalogoFD.length },
-            { key: "camisetas", label: "Camisetas", count: camisetas.length },
-            { key: "moletons", label: "Moletons", count: moletons.length },
+            ...categoryTabs.map(([slug, label]) => ({
+              key: slug,
+              label,
+              count: catalogoFD.filter((p) => p.category === slug).length,
+            })),
           ].map(({ key, label, count }) => (
             <button
               key={key}
-              onClick={() => setActiveCategory(key as any)}
+              onClick={() => setActiveCategory(key)}
               className={`flex items-center gap-2 px-6 py-3 text-sm font-bold uppercase tracking-widest transition-all ${
                 activeCategory === key
                   ? "bg-[#F5C542] text-black"
@@ -649,15 +680,25 @@ export function CatalogoFD({ onAddToCart }: CatalogoFDProps) {
         </div>
 
         {/* ─── PRODUCT GRID ─── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onSelect={handleSelect}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="text-white/50 text-sm py-12 text-center">
+            Carregando catálogo...
+          </div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="text-white/50 text-sm py-12 text-center">
+            Nenhum produto disponível nesta categoria no momento.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onSelect={handleSelect}
+              />
+            ))}
+          </div>
+        )}
 
         {/* ─── BOTTOM INFO BAR ─── */}
         <div className="mt-14 border-t border-white/10 pt-8 grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">

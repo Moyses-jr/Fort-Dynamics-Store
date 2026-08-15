@@ -17,6 +17,7 @@ import { useAddresses, useFavorites } from "../hooks/useUserProfile";
 import { mockTestimonials } from "../utils/mockData";
 import type { CartItem } from "../types";
 import { resolveVariantId } from "../lib/variantResolver";
+import { AdminPanel } from "../components/AdminPanel";
 
 // ── Inner app (tem acesso aos contexts) ─────────────────────────────
 function AppInner() {
@@ -39,6 +40,7 @@ function AppInner() {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   const subtotal = items.reduce((s, i) => s + i.subtotal, 0);
   const shipping = subtotal > 299 ? 0 : 20;
@@ -225,6 +227,8 @@ function AppInner() {
         onCartClick={() => setIsCartOpen(true)}
         onLoginClick={handleLoginClick}
         isLoggedIn={isLoggedIn}
+        isAdmin={user?.isAdmin}
+        onAdminClick={() => setIsAdminOpen(true)}
       />
 
       <Hero
@@ -389,6 +393,8 @@ function AppInner() {
         shipping={shipping}
         total={total}
       />
+
+      <AdminPanel isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} />
     </div>
   );
 }

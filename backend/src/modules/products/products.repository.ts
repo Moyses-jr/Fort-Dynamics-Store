@@ -86,6 +86,10 @@ export class ProductsRepository {
     })
   }
 
+  async findBySlug(slug: string) {
+    return prisma.product.findUnique({ where: { slug }, select: { id: true } })
+  }
+
   async findFeatured(limit = 8) {
     return prisma.product.findMany({
       where: { isFeatured: true, available: true },
