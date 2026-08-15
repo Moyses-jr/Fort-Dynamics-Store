@@ -239,8 +239,8 @@ async function main() {
     where: { email: 'admin@fdstore.com.br' },
     update: {},
     create: {
-      name: 'Admin FD Store',
-      email: 'admin@fdstore.com.br',
+      name: 'AdminFD',
+      email: 'adminFD@fdstore.com',
       passwordHash: adminPassword,
       role: UserRole.ADMIN,
       isActive: true,

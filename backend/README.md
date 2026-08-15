@@ -45,17 +45,17 @@ npm run dev
 
 ## Scripts
 
-| Comando | Descrição |
-|---|---|
-| `npm run dev` | Inicia com hot-reload (tsx watch) |
-| `npm run build` | Compila TypeScript |
-| `npm start` | Inicia versão compilada |
-| `npm run db:migrate` | Roda migrations (dev) |
-| `npm run db:migrate:prod` | Deploy de migrations (prod) |
-| `npm run db:seed` | Popula banco com dados iniciais |
-| `npm run db:studio` | Abre Prisma Studio |
-| `npm test` | Roda testes |
-| `npm run lint` | Verifica lint |
+| Comando                   | Descrição                         |
+| ------------------------- | --------------------------------- |
+| `npm run dev`             | Inicia com hot-reload (tsx watch) |
+| `npm run build`           | Compila TypeScript                |
+| `npm start`               | Inicia versão compilada           |
+| `npm run db:migrate`      | Roda migrations (dev)             |
+| `npm run db:migrate:prod` | Deploy de migrations (prod)       |
+| `npm run db:seed`         | Popula banco com dados iniciais   |
+| `npm run db:studio`       | Abre Prisma Studio                |
+| `npm test`                | Roda testes                       |
+| `npm run lint`            | Verifica lint                     |
 
 ## Usuário admin padrão (seed)
 
