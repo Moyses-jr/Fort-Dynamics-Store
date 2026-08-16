@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save, X } from 'lucide-react';
 import type { Product, ProductColor } from '../types';
+import { useProducts, type ApiProduct } from '../hooks/useProducts';
 
 interface ProductTemplate {
   id: string;
@@ -22,86 +23,26 @@ interface ProductManagerProps {
 export function ProductManager({ onProductsUpdate }: ProductManagerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<ProductTemplate | null>(null);
-  
-  // Templates iniciais
-  const [products, setProducts] = useState<ProductTemplate[]>([
-    {
-      id: 'template-001',
-      name: 'Camiseta Básica',
-      category: 'camisetas',
-      model: 'Básica',
-      fabricType: '100% Algodão',
-      basePrice: 99.90,
-      colors: [
-        { name: 'Preto', hex: '#000000', available: true },
-        { name: 'Branco', hex: '#ffffff', available: true },
-      ],
-      sizes: ['PP', 'P', 'M', 'G', 'GG', 'XG'],
-      description: 'Camiseta básica premium FD Store',
-      image: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
-    },
-    {
-      id: 'template-002',
-      name: 'Camiseta Polo',
-      category: 'camisetas',
-      model: 'Polo',
-      fabricType: 'Piquet Premium',
-      basePrice: 149.90,
-      colors: [
-        { name: 'Preto', hex: '#000000', available: true },
-        { name: 'Branco', hex: '#ffffff', available: true },
-        { name: 'Cinza', hex: '#808080', available: true },
-      ],
-      sizes: ['P', 'M', 'G', 'GG', 'XG'],
-      description: 'Polo premium com gola e botões',
-      image: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
-    },
-    {
-      id: 'template-003',
-      name: 'Camiseta Oversized',
-      category: 'camisetas',
-      model: 'Oversized',
-      fabricType: 'Algodão 30.1',
-      basePrice: 119.90,
-      colors: [
-        { name: 'Preto', hex: '#000000', available: true },
-        { name: 'Branco Off', hex: '#f5f5f5', available: true },
-      ],
-      sizes: ['M', 'G', 'GG', 'XG'],
-      description: 'Modelagem oversized urbana',
-      image: 'https://images.unsplash.com/photo-1655141559812-42f8c1e8942d?w=800',
-    },
-    {
-      id: 'template-004',
-      name: 'Moletom Básico',
-      category: 'moletons',
-      model: 'Básico',
-      fabricType: 'Moletom 70% Algodão',
-      basePrice: 199.90,
-      colors: [
-        { name: 'Preto', hex: '#000000', available: true },
-        { name: 'Cinza Chumbo', hex: '#4a4a4a', available: true },
-      ],
-      sizes: ['P', 'M', 'G', 'GG', 'XG'],
-      description: 'Moletom básico premium',
-      image: 'https://images.unsplash.com/photo-1759972524936-26c44fb258ca?w=800',
-    },
-    {
-      id: 'template-005',
-      name: 'Moletom com Capuz',
-      category: 'moletons',
-      model: 'Com Capuz',
-      fabricType: 'Moletom Premium',
-      basePrice: 249.90,
-      colors: [
-        { name: 'Preto', hex: '#000000', available: true },
-        { name: 'Cinza', hex: '#808080', available: true },
-      ],
-      sizes: ['P', 'M', 'G', 'GG', 'XG'],
-      description: 'Moletom premium com capuz e bolso canguru',
-      image: 'https://images.unsplash.com/photo-1759972524936-26c44fb258ca?w=800',
-    },
-  ]);
+
+  // Busca a lista real de produtos no backend (GET /products)
+  const { products: apiProducts, isLoading: isLoadingProducts } = useProducts({ limit: 100 });
+  const [products, setProducts] = useState<ProductTemplate[]>([]);
+
+  useEffect(() => {
+    const mapped: ProductTemplate[] = apiProducts.map((p: ApiProduct) => ({
+      id: p.id,
+      name: p.name,
+      category: p.category.slug === 'moletons' ? 'moletons' : 'camisetas',
+      model: p.fabricType,
+      fabricType: p.fabricType,
+      basePrice: p.priceBoth,
+      colors: p.colors.map(c => ({ name: c.name, hex: c.hex, available: c.available })),
+      sizes: p.sizes.map(s => s.size),
+      description: p.description,
+      image: p.images.find(i => i.isPrimary)?.url ?? p.images[0]?.url ?? '',
+    }));
+    setProducts(mapped);
+  }, [apiProducts]);
 
   const [newProduct, setNewProduct] = useState<ProductTemplate>({
     id: '',
@@ -184,6 +125,9 @@ export function ProductManager({ onProductsUpdate }: ProductManagerProps) {
           </h3>
 
           {/* Lista de produtos para editar */}
+          {isLoadingProducts ? (
+            <p className="text-fd-white/60 text-sm mb-6">Carregando produtos...</p>
+          ) : (
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {products.map((product) => (
               <div key={product.id} className="bg-fd-black/50 border border-fd-gold/10 rounded-lg p-4">
@@ -225,6 +169,7 @@ export function ProductManager({ onProductsUpdate }: ProductManagerProps) {
               </div>
             ))}
           </div>
+          )}
 
           {/* Formulário de adição/edição */}
           <div className="bg-fd-black/80 border border-fd-gold/20 rounded-lg p-6">
