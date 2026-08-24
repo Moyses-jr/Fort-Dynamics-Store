@@ -3,8 +3,7 @@ import { useState } from "react";
 import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
 import { CatalogoFD } from "../components/CatalogoFD";
-import { UniformCustomizer } from "../components/UniformCustomizer";
-import { Testimonials } from "../components/Testimonials";
+import { Testimonials } from "../components/FeedBacks";
 import { Footer } from "../components/Footer";
 import { Cart } from "../components/Cart";
 import { UserProfile } from "../components/UserProfile";
@@ -18,6 +17,7 @@ import { mockTestimonials } from "../utils/mockData";
 import type { CartItem } from "../types";
 import { resolveVariantId } from "../lib/variantResolver";
 import { AdminPanel } from "../components/AdminPanel";
+import { UniformCustomizer } from "../components/UniformCustomizer";
 
 // ── Inner app (tem acesso aos contexts) ─────────────────────────────
 function AppInner() {
@@ -302,7 +302,7 @@ function AppInner() {
       <Testimonials testimonials={mockTestimonials} />
 
       {/* CTA Final */}
-      <section className="py-24 bg-[#0A0A0A] relative overflow-hidden">
+      <section className="pb-15 bg-[#0A0A0A] relative overflow-hidden">
         <div className="absolute inset-0">
           <img
             src="https://images.unsplash.com/photo-1580656940647-8854a00547f0?w=1920"

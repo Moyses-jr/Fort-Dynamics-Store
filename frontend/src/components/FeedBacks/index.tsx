@@ -1,4 +1,4 @@
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote } from "lucide-react";
 
 type Testimonial = {
   id: string;
@@ -14,7 +14,7 @@ type TestimonialsProps = {
 
 export function Testimonials({ testimonials }: TestimonialsProps) {
   return (
-    <section className="py-20 bg-fd-gray/30">
+    <section className="py-10 bg-fd-gray/30">
       <div className="container-fd">
         <div className="text-center mb-12">
           <h2 className="text-fd-white mb-4">O Que Dizem Nossos Clientes</h2>
@@ -28,15 +28,15 @@ export function Testimonials({ testimonials }: TestimonialsProps) {
               className="card-premium rounded-lg p-6 relative"
             >
               <Quote className="w-10 h-10 text-fd-gold/20 mb-4" />
-              
+
               <div className="flex gap-1 mb-4">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star
                     key={i}
                     className={`w-4 h-4 ${
                       i < testimonial.rating
-                        ? 'fill-fd-gold text-fd-gold'
-                        : 'text-fd-gray-lighter'
+                        ? "fill-fd-gold text-fd-gold"
+                        : "text-fd-gray-lighter"
                     }`}
                   />
                 ))}

@@ -199,7 +199,7 @@ function ProductCard({
             </>
           ) : (
             <>
-              {/* <ShoppingCart className="w-4 h-4" /> Personalizar & Comprar */}
+              <ShoppingCart className="w-4 h-4" /> Personalizar & Comprar
             </>
           )}
         </button>

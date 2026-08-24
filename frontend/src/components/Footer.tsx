@@ -1,8 +1,15 @@
-import { Instagram, Facebook, Twitter, Mail, Phone, MapPin } from 'lucide-react';
+import {
+  Instagram,
+  Facebook,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="bg-fd-black border-t border-fd-gray-lighter">
+    <footer className="bg-fd-black pt-10  border-t border-fd-gray-lighter">
       <div className="container-fd py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
@@ -12,12 +19,17 @@ export function Footer() {
                 <span className="text-fd-black font-display text-2xl">FD</span>
               </div>
               <div>
-                <div className="font-display text-xl text-fd-gold">FD STORE</div>
-                <div className="text-[10px] text-fd-white/60 tracking-widest -mt-1">FORT DYNAMIC</div>
+                <div className="font-display text-xl text-fd-gold">
+                  FD STORE
+                </div>
+                <div className="text-[10px] text-fd-white/60 tracking-widest -mt-1">
+                  FORT DYNAMIC
+                </div>
               </div>
             </div>
             <p className="text-fd-white/60 text-sm mb-4">
-              Vista-se com autoridade. Streetwear premium com tecnologia e estilo únicos.
+              Vista-se com autoridade. Streetwear premium com tecnologia e
+              estilo únicos.
             </p>
             <div className="flex gap-3">
               <a
@@ -50,25 +62,75 @@ export function Footer() {
           <div>
             <h4 className="font-display text-lg text-fd-white mb-4">Loja</h4>
             <ul className="space-y-2 text-sm text-fd-white/60">
-              <li><a href="#lancamentos" className="hover-gold">Lançamentos</a></li>
-              <li><a href="#camisetas" className="hover-gold">Camisetas</a></li>
-              <li><a href="#moletons" className="hover-gold">Moletons</a></li>
-              <li><a href="#uniformes" className="hover-gold">Uniformes</a></li>
-              <li><a href="#premium" className="hover-gold">Premium</a></li>
-              <li><a href="#personalizar" className="hover-gold">Personalizar</a></li>
+              <li>
+                <a href="#lancamentos" className="hover-gold">
+                  Lançamentos
+                </a>
+              </li>
+              <li>
+                <a href="#camisetas" className="hover-gold">
+                  Camisetas
+                </a>
+              </li>
+              <li>
+                <a href="#moletons" className="hover-gold">
+                  Moletons
+                </a>
+              </li>
+              <li>
+                <a href="#uniformes" className="hover-gold">
+                  Uniformes
+                </a>
+              </li>
+              <li>
+                <a href="#premium" className="hover-gold">
+                  Premium
+                </a>
+              </li>
+              <li>
+                <a href="#personalizar" className="hover-gold">
+                  Personalizar
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Info */}
           <div>
-            <h4 className="font-display text-lg text-fd-white mb-4">Informações</h4>
+            <h4 className="font-display text-lg text-fd-white mb-4">
+              Informações
+            </h4>
             <ul className="space-y-2 text-sm text-fd-white/60">
-              <li><a href="#" className="hover-gold">Sobre Nós</a></li>
-              <li><a href="#" className="hover-gold">Tabela de Tamanhos</a></li>
-              <li><a href="#" className="hover-gold">Política de Troca</a></li>
-              <li><a href="#" className="hover-gold">Frete e Entrega</a></li>
-              <li><a href="#" className="hover-gold">Termos de Uso</a></li>
-              <li><a href="#" className="hover-gold">Privacidade</a></li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Sobre Nós
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Tabela de Tamanhos
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Política de Troca
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Frete e Entrega
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Termos de Uso
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover-gold">
+                  Privacidade
+                </a>
+              </li>
             </ul>
           </div>
 
@@ -86,7 +148,11 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 text-fd-gold flex-shrink-0" />
-                <span>São Paulo, SP<br />Brasil</span>
+                <span>
+                  São Paulo, SP
+                  <br />
+                  Brasil
+                </span>
               </li>
             </ul>
 
@@ -108,10 +174,20 @@ export function Footer() {
 
         {/* Bottom */}
         <div className="pt-8 border-t border-fd-gray-lighter flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-fd-white/40">
-          <p>&copy; 2024 FD Store | Fort Dynamic. Todos os direitos reservados.</p>
+          <p>
+            &copy; 2024 FD Store | Fort Dynamic. Todos os direitos reservados.
+          </p>
           <div className="flex gap-6">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg" alt="Mastercard" className="h-6 opacity-60" />
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" className="h-6 opacity-60" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Mastercard_2019_logo.svg"
+              alt="Mastercard"
+              className="h-6 opacity-60"
+            />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+              alt="Visa"
+              className="h-6 opacity-60"
+            />
             <span className="text-fd-gold">PIX</span>
           </div>
         </div>
