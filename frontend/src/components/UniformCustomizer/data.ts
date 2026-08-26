@@ -54,11 +54,8 @@ export const uploadTargets: { view: ViewSide; label: string }[] = [
 ];
 
 export const wizardSteps = [
-  { title: "Escolha o Modelo" },
-  { title: "Upload da Arte" },
-  { title: "Cor do Tecido" },
-  { title: "Tamanho e Quantidade" },
-  { title: "Adicionar ao Carrinho" },
+  { title: "Modelo, Arte e Cor" },
+  { title: "Tamanho, Quantidade e Carrinho" },
 ];
 
 export const infoHighlights = [

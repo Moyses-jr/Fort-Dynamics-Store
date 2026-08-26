@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Download } from "lucide-react";
 import { mockupTemplates, wizardSteps } from "./data";
 import { createDefaultViewCustomization, formatPrice } from "./utils";
@@ -42,6 +42,33 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
   const [quantity, setQuantity] = useState(1);
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  // Mede a altura do card de Preview para o wizard acompanhá-la.
+  // Só se aplica em telas grandes (lg), onde as colunas ficam lado a
+  // lado — no mobile elas empilham e cada uma usa sua altura natural.
+  const previewColumnRef = useRef<HTMLDivElement>(null);
+  const [previewHeight, setPreviewHeight] = useState<number>();
+  const [isDesktopLayout, setIsDesktopLayout] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 1024px)");
+    const updateIsDesktopLayout = () => setIsDesktopLayout(mediaQuery.matches);
+    updateIsDesktopLayout();
+    mediaQuery.addEventListener("change", updateIsDesktopLayout);
+    return () =>
+      mediaQuery.removeEventListener("change", updateIsDesktopLayout);
+  }, []);
+
+  useEffect(() => {
+    const element = previewColumnRef.current;
+    if (!element) return;
+
+    const observer = new ResizeObserver((entries) => {
+      setPreviewHeight(entries[0].contentRect.height);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   const current = customizations[currentView];
   const currentMockupImage =
@@ -108,7 +135,7 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
     setCurrentStep((step) => Math.max(step - 1, 0));
   };
 
-  // Cada etapa do wizard reaproveita, sem alterações, os componentes
+  // Cada página do wizard reaproveita, sem alterações, os componentes
   // já existentes na configuração da personalização.
   const wizardStepContent = [
     <>
@@ -118,9 +145,9 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
         onSelect={setSelectedMockup}
       />
       <ArtUpload onUpload={handleFileUpload} />
-      <ColorPicker selectedColor={selectedColor} onSelect={setSelectedColor} />
     </>,
     <>
+      <ColorPicker selectedColor={selectedColor} onSelect={setSelectedColor} />
       <SizeAndQuantitySelector
         selectedSize={selectedSize}
         quantity={quantity}
@@ -136,6 +163,7 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
       />
     </>,
   ];
+
   return (
     <div className="min-h-screen bg-fd-black py-16">
       <div className="container-fd">
@@ -152,7 +180,7 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
 
         <div className="grid lg:grid-cols-2 gap-8">
           {/* Preview Area */}
-          <div className="space-y-6">
+          <div ref={previewColumnRef} className="space-y-6">
             <div className="bg-fd-gray/20 border border-fd-gold/20 rounded-lg p-6">
               <h3 className="text-xl font-bold text-fd-white mb-4">
                 Preview do Uniforme
@@ -198,14 +226,25 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
           </div>
 
           {/* Configuration Panel: etapas do wizard */}
-          <div className="space-y-6">
+          <div
+            className="flex flex-col space-y-6 lg:h-full"
+            style={
+              isDesktopLayout && previewHeight
+                ? { height: previewHeight }
+                : undefined
+            }
+          >
+            {/* <div className="flex-1 min-h-0 space-y-6 lg:overflow-y-auto lg:pr-1"> */}
             {wizardStepContent[currentStep]}
+            {/* </div> */}
+
             <WizardNavigation
               isFirstStep={currentStep === 0}
               isLastStep={currentStep === wizardSteps.length - 1}
               onBack={goToPreviousStep}
               onNext={goToNextStep}
             />
+
             <WizardStepIndicator
               steps={wizardSteps}
               currentStep={currentStep}

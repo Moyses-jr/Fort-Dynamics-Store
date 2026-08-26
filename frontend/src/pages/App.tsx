@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Header } from "../components/Header";
 import { Hero } from "../components/Hero";
 import { CatalogoFD } from "../components/CatalogoFD";
-import { Testimonials } from "../components/FeedBacks";
 import { Footer } from "../components/Footer";
 import { Cart } from "../components/Cart";
 import { UserProfile } from "../components/UserProfile";
@@ -298,8 +297,6 @@ function AppInner() {
           }}
         />
       </section>
-
-      <Testimonials testimonials={mockTestimonials} />
 
       {/* CTA Final */}
       <section className="pb-15 bg-[#0A0A0A] relative overflow-hidden">
