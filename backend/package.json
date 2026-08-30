@@ -3,6 +3,7 @@
   "version": "1.0",
   "description": "FD Store - Backend API",
   "main": "dist/app.js",
+  "license": "UNLICENSED",
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
