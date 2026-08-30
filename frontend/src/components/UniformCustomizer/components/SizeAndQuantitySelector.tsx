@@ -43,7 +43,7 @@ export function SizeAndQuantitySelector({
         <div className="flex items-center gap-3">
           <button
             onClick={() => onQuantityChange(Math.max(1, quantity - 1))}
-            className="w-10 h-10 bg-fd-gold/20 hover:bg-fd-gold/30 text-fd-gold rounded transition-colors"
+            className="w-auto h-10 bg-fd-gold/20 hover:bg-fd-gold/30 text-fd-gold rounded transition-colors"
           >
             -
           </button>
@@ -58,7 +58,7 @@ export function SizeAndQuantitySelector({
           />
           <button
             onClick={() => onQuantityChange(quantity + 1)}
-            className="w-10 h-10 bg-fd-gold/20 hover:bg-fd-gold/30 text-fd-gold rounded transition-colors"
+            className="w-auto h-10 bg-fd-gold/20 hover:bg-fd-gold/30 text-fd-gold rounded transition-colors"
           >
             +
           </button>

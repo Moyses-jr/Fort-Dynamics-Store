@@ -1,7 +1,17 @@
-import { useState } from 'react';
-import { Upload, Wand2, Loader2, Download } from 'lucide-react';
-import type { Product, ProductSize, ProductColor, Stamp, AICharacter } from '../types';
-import { generateStampWithAI, generateCharacterWithAI, generate3DPreview } from '../utils/aiEngine';
+import { useState } from "react";
+import { Upload, Wand2, Loader2, Download } from "lucide-react";
+import type {
+  Product,
+  ProductSize,
+  ProductColor,
+  Stamp,
+  AICharacter,
+} from "../types";
+import {
+  generateStampWithAI,
+  generateCharacterWithAI,
+  generate3DPreview,
+} from "../utils/aiEngine";
 
 type CustomizerProps = {
   product: Product;
@@ -10,34 +20,41 @@ type CustomizerProps = {
   availableCharacters: AICharacter[];
 };
 
-export function Customizer({ 
-  product, 
-  onAddToCart, 
+export function Customizer({
+  product,
+  onAddToCart,
   availableStamps,
-  availableCharacters 
+  availableCharacters,
 }: CustomizerProps) {
-  const [selectedSize, setSelectedSize] = useState<ProductSize>(product.sizes[0]);
-  const [selectedColor, setSelectedColor] = useState<ProductColor>(product.colors[0]);
+  const [selectedSize, setSelectedSize] = useState<ProductSize>(
+    product.sizes[0],
+  );
+  const [selectedColor, setSelectedColor] = useState<ProductColor>(
+    product.colors[0],
+  );
   const [selectedStamp, setSelectedStamp] = useState<Stamp | null>(null);
-  const [selectedCharacter, setSelectedCharacter] = useState<AICharacter | null>(null);
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<AICharacter | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [customStampMode, setCustomStampMode] = useState<'none' | 'upload' | 'ai'>('none');
-  const [aiPrompt, setAiPrompt] = useState('');
+  const [customStampMode, setCustomStampMode] = useState<
+    "none" | "upload" | "ai"
+  >("none");
+  const [aiPrompt, setAiPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [preview3D, setPreview3D] = useState<string | null>(null);
   const [isGenerating3D, setIsGenerating3D] = useState(false);
 
   const handleGenerateStamp = async () => {
     if (!aiPrompt.trim()) return;
-    
+
     setIsGenerating(true);
     try {
       const newStamp = await generateStampWithAI(aiPrompt);
       setSelectedStamp(newStamp);
-      setCustomStampMode('none');
-      setAiPrompt('');
+      setCustomStampMode("none");
+      setAiPrompt("");
     } catch (error) {
-      console.error('Erro ao gerar estampa:', error);
+      console.error("Erro ao gerar estampa:", error);
     } finally {
       setIsGenerating(false);
     }
@@ -49,11 +66,11 @@ export function Customizer({
       const preview = await generate3DPreview(
         product.id,
         selectedColor.hex,
-        selectedStamp?.id
+        selectedStamp?.id,
       );
       setPreview3D(preview);
     } catch (error) {
-      console.error('Erro ao gerar prévia 3D:', error);
+      console.error("Erro ao gerar prévia 3D:", error);
     } finally {
       setIsGenerating3D(false);
     }
@@ -87,7 +104,7 @@ export function Customizer({
             alt={product.name}
             className="w-full h-full object-cover"
           />
-          
+
           {selectedStamp && (
             <div className="absolute inset-0 flex items-center justify-center">
               <img
@@ -146,8 +163,8 @@ export function Customizer({
                 onClick={() => setSelectedSize(size)}
                 className={`px-6 py-3 border-2 transition-all ${
                   selectedSize === size
-                    ? 'border-fd-gold bg-fd-gold text-fd-black'
-                    : 'border-fd-gray-lighter text-fd-white hover:border-fd-gold'
+                    ? "border-fd-gold bg-fd-gold text-fd-black"
+                    : "border-fd-gray-lighter text-fd-white hover:border-fd-gold"
                 }`}
               >
                 {size}
@@ -169,9 +186,9 @@ export function Customizer({
                 disabled={!color.available}
                 className={`w-12 h-12 rounded-full border-4 transition-all ${
                   selectedColor.name === color.name
-                    ? 'border-fd-gold scale-110'
-                    : 'border-fd-gray-lighter hover:border-fd-gold/50'
-                } ${!color.available ? 'opacity-30 cursor-not-allowed' : ''}`}
+                    ? "border-fd-gold scale-110"
+                    : "border-fd-gray-lighter hover:border-fd-gold/50"
+                } ${!color.available ? "opacity-30 cursor-not-allowed" : ""}`}
                 style={{ backgroundColor: color.hex }}
                 title={color.name}
               />
@@ -184,35 +201,35 @@ export function Customizer({
           <label className="block text-sm uppercase tracking-wider text-fd-white/80 mb-3">
             Estampa
           </label>
-          
+
           <div className="flex gap-2 mb-4">
             <button
-              onClick={() => setCustomStampMode('none')}
+              onClick={() => setCustomStampMode("none")}
               className={`flex-1 py-2 text-sm border ${
-                customStampMode === 'none'
-                  ? 'border-fd-gold bg-fd-gold/10 text-fd-gold'
-                  : 'border-fd-gray-lighter text-fd-white'
+                customStampMode === "none"
+                  ? "border-fd-gold bg-fd-gold/10 text-fd-gold"
+                  : "border-fd-gray-lighter text-fd-white"
               }`}
             >
               Catálogo
             </button>
             <button
-              onClick={() => setCustomStampMode('upload')}
+              onClick={() => setCustomStampMode("upload")}
               className={`flex-1 py-2 text-sm border ${
-                customStampMode === 'upload'
-                  ? 'border-fd-gold bg-fd-gold/10 text-fd-gold'
-                  : 'border-fd-gray-lighter text-fd-white'
+                customStampMode === "upload"
+                  ? "border-fd-gold bg-fd-gold/10 text-fd-gold"
+                  : "border-fd-gray-lighter text-fd-white"
               }`}
             >
               <Upload className="inline-block w-4 h-4 mr-1" />
               Upload
             </button>
             <button
-              onClick={() => setCustomStampMode('ai')}
+              onClick={() => setCustomStampMode("ai")}
               className={`flex-1 py-2 text-sm border ${
-                customStampMode === 'ai'
-                  ? 'border-fd-gold bg-fd-gold/10 text-fd-gold'
-                  : 'border-fd-gray-lighter text-fd-white'
+                customStampMode === "ai"
+                  ? "border-fd-gold bg-fd-gold/10 text-fd-gold"
+                  : "border-fd-gray-lighter text-fd-white"
               }`}
             >
               <Wand2 className="inline-block w-4 h-4 mr-1" />
@@ -220,7 +237,7 @@ export function Customizer({
             </button>
           </div>
 
-          {customStampMode === 'none' && (
+          {customStampMode === "none" && (
             <div className="grid grid-cols-4 gap-2">
               {availableStamps.map((stamp) => (
                 <button
@@ -228,8 +245,8 @@ export function Customizer({
                   onClick={() => setSelectedStamp(stamp)}
                   className={`aspect-square border-2 rounded overflow-hidden transition-all ${
                     selectedStamp?.id === stamp.id
-                      ? 'border-fd-gold'
-                      : 'border-fd-gray-lighter hover:border-fd-gold/50'
+                      ? "border-fd-gold"
+                      : "border-fd-gray-lighter hover:border-fd-gold/50"
                   }`}
                 >
                   <img
@@ -242,17 +259,17 @@ export function Customizer({
             </div>
           )}
 
-          {customStampMode === 'upload' && (
+          {customStampMode === "upload" && (
             <div className="border-2 border-dashed border-fd-gray-lighter rounded-lg p-8 text-center">
               <Upload className="w-12 h-12 text-fd-gold mx-auto mb-4" />
               <p className="text-fd-white/60 mb-2">Arraste sua imagem aqui</p>
-              <button className="btn-primary py-2 px-6 text-sm">
+              <button className="btn-primary btn-primary-lg py-2 px-6 text-sm">
                 Selecionar Arquivo
               </button>
             </div>
           )}
 
-          {customStampMode === 'ai' && (
+          {customStampMode === "ai" && (
             <div className="space-y-3">
               <textarea
                 value={aiPrompt}
@@ -263,7 +280,7 @@ export function Customizer({
               <button
                 onClick={handleGenerateStamp}
                 disabled={isGenerating || !aiPrompt.trim()}
-                className="w-full btn-primary py-3"
+                className="w-full btn-primary btn-primary-lg py-3"
               >
                 {isGenerating ? (
                   <>
@@ -291,8 +308,8 @@ export function Customizer({
               onClick={() => setSelectedCharacter(null)}
               className={`aspect-square border-2 rounded flex items-center justify-center transition-all ${
                 !selectedCharacter
-                  ? 'border-fd-gold bg-fd-gold/10'
-                  : 'border-fd-gray-lighter hover:border-fd-gold/50'
+                  ? "border-fd-gold bg-fd-gold/10"
+                  : "border-fd-gray-lighter hover:border-fd-gold/50"
               }`}
             >
               <span className="text-xs text-fd-white/60">Nenhum</span>
@@ -303,8 +320,8 @@ export function Customizer({
                 onClick={() => setSelectedCharacter(character)}
                 className={`aspect-square border-2 rounded overflow-hidden transition-all ${
                   selectedCharacter?.id === character.id
-                    ? 'border-fd-gold'
-                    : 'border-fd-gray-lighter hover:border-fd-gold/50'
+                    ? "border-fd-gold"
+                    : "border-fd-gray-lighter hover:border-fd-gold/50"
                 }`}
               >
                 <img
@@ -344,7 +361,7 @@ export function Customizer({
         {/* Add to Cart */}
         <button
           onClick={handleAddToCart}
-          className="w-full btn-primary py-4 text-lg"
+          className="w-full btn-primary btn-primary-lg py-4 text-lg"
         >
           Adicionar ao Carrinho - R$ {calculateTotal().toFixed(2)}
         </button>

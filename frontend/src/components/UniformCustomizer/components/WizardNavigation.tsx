@@ -34,7 +34,7 @@ export function WizardNavigation({
       {!isLastStep && (
         <button
           onClick={onNext}
-          className="flex-1 btn-primary flex items-center justify-center gap-2"
+          className="flex-1 btn-primary btn-primary-lg flex items-center justify-center gap-2"
         >
           Próximo
           <ChevronRight className="w-5 h-5" />

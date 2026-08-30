@@ -39,11 +39,11 @@ export function CartSummary({
       <button
         onClick={onAddToCart}
         disabled={!canAddToCart}
-        className={`w-full btn-primary flex items-center justify-center gap-2 ${
+        className={`w-full btn-primary btn-primary-sm flex items-center justify-center gap-3 ${
           !canAddToCart ? "opacity-50 cursor-not-allowed" : ""
         }`}
       >
-        <ShoppingCart className="w-5 h-5" />
+        <ShoppingCart className="w-5 h-5 " />
         Adicionar ao Carrinho
       </button>
       {!canAddToCart && (

@@ -1,5 +1,5 @@
-import { X, Minus, Plus, ShoppingBag, CreditCard } from 'lucide-react';
-import type { CartItem } from '../types';
+import { X, Minus, Plus, ShoppingBag, CreditCard } from "lucide-react";
+import type { CartItem } from "../types";
 
 type CartProps = {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export function Cart({
   return (
     <>
       {/* Overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-fd-black/80 backdrop-blur-sm z-50"
         onClick={onClose}
       />
@@ -51,7 +51,9 @@ export function Cart({
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center">
               <ShoppingBag className="w-20 h-20 text-fd-gold/20 mb-4" />
-              <p className="text-fd-white/60 text-lg mb-2">Seu carrinho está vazio</p>
+              <p className="text-fd-white/60 text-lg mb-2">
+                Seu carrinho está vazio
+              </p>
               <p className="text-fd-white/40 text-sm mb-6">
                 Adicione produtos para começar a comprar
               </p>
@@ -87,7 +89,9 @@ export function Cart({
                             <div>Tamanho: {item.customization.size}</div>
                             <div>Cor: {item.customization.color.name}</div>
                             {item.customization.stampId && (
-                              <div className="text-fd-gold">Com estampa personalizada</div>
+                              <div className="text-fd-gold">
+                                Com estampa personalizada
+                              </div>
                             )}
                           </div>
                         </div>
@@ -104,7 +108,9 @@ export function Cart({
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                            onClick={() =>
+                              onUpdateQuantity(item.id, item.quantity - 1)
+                            }
                             disabled={item.quantity <= 1}
                             className="w-7 h-7 border border-fd-gray-lighter hover:border-fd-gold transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center"
                           >
@@ -114,7 +120,9 @@ export function Cart({
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                            onClick={() =>
+                              onUpdateQuantity(item.id, item.quantity + 1)
+                            }
                             className="w-7 h-7 border border-fd-gray-lighter hover:border-fd-gold transition-colors flex items-center justify-center"
                           >
                             <Plus className="w-3 h-3" />
@@ -144,7 +152,9 @@ export function Cart({
               </div>
               <div className="flex justify-between text-fd-white/80">
                 <span>Frete</span>
-                <span>{shipping === 0 ? 'GRÁTIS' : `R$ ${shipping.toFixed(2)}`}</span>
+                <span>
+                  {shipping === 0 ? "GRÁTIS" : `R$ ${shipping.toFixed(2)}`}
+                </span>
               </div>
               {shipping === 0 && (
                 <p className="text-xs text-fd-gold">
@@ -157,7 +167,9 @@ export function Cart({
                 </p>
               )}
               <div className="pt-2 border-t border-fd-gray-lighter flex justify-between">
-                <span className="font-display text-lg text-fd-white">Total</span>
+                <span className="font-display text-lg text-fd-white">
+                  Total
+                </span>
                 <span className="font-display text-2xl text-fd-gold">
                   R$ {total.toFixed(2)}
                 </span>
@@ -167,7 +179,7 @@ export function Cart({
             {/* Checkout Button */}
             <button
               onClick={onCheckout}
-              className="w-full btn-primary py-4"
+              className="w-full btn-primary btn-primary-lg py-4"
             >
               <CreditCard className="inline-block w-5 h-5 mr-2" />
               Finalizar Compra

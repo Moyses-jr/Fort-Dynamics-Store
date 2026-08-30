@@ -234,9 +234,7 @@ export function UniformCustomizer({ onAddToCart }: UniformCustomizerProps) {
                 : undefined
             }
           >
-            {/* <div className="flex-1 min-h-0 space-y-6 lg:overflow-y-auto lg:pr-1"> */}
             {wizardStepContent[currentStep]}
-            {/* </div> */}
 
             <WizardNavigation
               isFirstStep={currentStep === 0}

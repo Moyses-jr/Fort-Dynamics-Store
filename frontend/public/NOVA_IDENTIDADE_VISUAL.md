@@ -7,11 +7,13 @@
 ## 🎨 PALETA DE CORES
 
 ### **ANTES (Preto/Branco/Dourado):**
+
 - Preto: `#000000`
 - Branco: `#ffffff`
 - Dourado: `#d4af37`
 
 ### **AGORA (Bege/Amarelo/Preto):**
+
 - **Bege Principal:** `#D4B896`
 - **Amarelo/Dourado:** `#F5C542`
 - **Amarelo Escuro:** `#E0A81F`
@@ -96,6 +98,7 @@
 ## 🎨 ELEMENTOS VISUAIS
 
 ### **Design Cards:**
+
 - Fundo bege/caramelo
 - Bordas pretas grossas (4px)
 - Efeito sombra ao hover
@@ -103,12 +106,14 @@
 - Marca d'água "FD STORE" no fundo
 
 ### **Tipografia:**
+
 - **Títulos:** Bebas Neue (Bold Italic)
 - **Corpo:** Inter
 - **Valores:** Fonte "script" estilo manuscrito
 - Contorno preto nos títulos amarelos
 
 ### **Botões:**
+
 - Fundo amarelo (#F5C542)
 - Borda preta grossa (3px)
 - Efeito shadow-box (sombra preta)
@@ -119,11 +124,13 @@
 ## 📁 ARQUIVOS CRIADOS/ATUALIZADOS
 
 ### ✅ **Novos Arquivos:**
+
 1. `/data/catalogoFD.ts` - Catálogo completo de produtos
 2. `/components/CatalogoFD.tsx` - Componente de catálogo com nova identidade
 3. `/NOVA_IDENTIDADE_VISUAL.md` - Este documento
 
 ### ✅ **Atualizados:**
+
 1. `/styles/globals.css` - Novas cores e utilitários
 2. `/App.tsx` - Integração do novo catálogo
 
@@ -132,22 +139,26 @@
 ## 🎯 FUNCIONALIDADES DO CATÁLOGO
 
 ### **Filtros:**
+
 - ✅ Todos os produtos
 - ✅ Apenas Camisetas (8)
 - ✅ Apenas Moletons (2)
 
 ### **Opções de Personalização:**
+
 - ✅ Frente e Verso
 - ✅ Apenas Frente
 - ✅ Apenas Verso
 
 ### **Configurações:**
+
 - ✅ Escolha de cor do tecido (7 cores)
 - ✅ Seleção de tamanho (PP ao XXG)
 - ✅ Quantidade ajustável
 - ✅ Cálculo automático do total
 
 ### **Modal de Personalização:**
+
 - ✅ Visualização do produto
 - ✅ Seleção de opções de impressão
 - ✅ Paleta de cores
@@ -157,6 +168,7 @@
 - ✅ Adicionar ao carrinho
 
 ### **Recursos Especiais:**
+
 - ✅ Produtos que requerem orçamento (Dryfit)
 - ✅ Pedido mínimo de unidades
 - ✅ Observações e notas especiais
@@ -180,6 +192,7 @@ Para completar a transformação:
 ## 📸 REFERÊNCIA VISUAL
 
 Baseado nas imagens do catálogo fornecido:
+
 - Fundo bege/caramelo
 - Títulos amarelos com contorno preto
 - Layout com bordas pretas
@@ -193,11 +206,13 @@ Baseado nas imagens do catálogo fornecido:
 ## 💡 COMO USAR
 
 ### **Ver o Catálogo:**
+
 1. Acesse a seção "Produtos" no site
 2. Veja os 10 produtos organizados
 3. Filtre por categoria (Camisetas/Moletons)
 
 ### **Fazer um Pedido:**
+
 1. Clique em "PERSONALIZAR E COMPRAR"
 2. Escolha opção (Frente/Verso/Ambos)
 3. Selecione cor do tecido
@@ -211,17 +226,19 @@ Baseado nas imagens do catálogo fornecido:
 ## 🎨 CLASSES CSS CUSTOMIZADAS
 
 ### **Utilitárias:**
+
 ```css
 .fd-title - Título amarelo com contorno preto
 .fd-watermark - Marca d'água grande no fundo
 .yellow-gradient - Gradiente amarelo
 .text-yellow-gradient - Texto com gradiente amarelo
-.btn-primary - Botão amarelo com shadow-box
+.btn-primary btn-primary-lg - Botão amarelo com shadow-box
 .btn-secondary - Botão bege com shadow-box
 .card-premium - Card com estilo premium
 ```
 
 ### **Cores:**
+
 ```css
 bg-fd-beige - Fundo bege principal
 bg-fd-yellow - Fundo amarelo
@@ -234,8 +251,8 @@ border-fd-black - Borda preta
 ---
 
 **FD STORE | FORT DYNAMIC**  
-*Personalize do Seu Jeito!* ✨👑
+_Personalize do Seu Jeito!_ ✨👑
 
 ---
 
-*Documento atualizado em: 27/01/2026*
+_Documento atualizado em: 27/01/2026_

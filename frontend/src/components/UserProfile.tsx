@@ -1,5 +1,12 @@
-import { X, Package, Heart, MapPin, User as UserIcon, LogOut } from 'lucide-react';
-import type { User, Order } from '../types';
+import {
+  X,
+  Package,
+  Heart,
+  MapPin,
+  User as UserIcon,
+  LogOut,
+} from "lucide-react";
+import type { User, Order } from "../types";
 
 type UserProfileProps = {
   isOpen: boolean;
@@ -20,26 +27,26 @@ export function UserProfile({
 }: UserProfileProps) {
   if (!isOpen) return null;
 
-  const getStatusColor = (status: Order['status']) => {
-    const colors: Record<Order['status'], string> = {
-      pending: 'text-yellow-400',
-      confirmed: 'text-blue-400',
-      production: 'text-purple-400',
-      shipping: 'text-orange-400',
-      delivered: 'text-green-400',
-      cancelled: 'text-red-400',
+  const getStatusColor = (status: Order["status"]) => {
+    const colors: Record<Order["status"], string> = {
+      pending: "text-yellow-400",
+      confirmed: "text-blue-400",
+      production: "text-purple-400",
+      shipping: "text-orange-400",
+      delivered: "text-green-400",
+      cancelled: "text-red-400",
     };
     return colors[status];
   };
 
-  const getStatusLabel = (status: Order['status']) => {
-    const labels: Record<Order['status'], string> = {
-      pending: 'Pendente',
-      confirmed: 'Confirmado',
-      production: 'Em Produção',
-      shipping: 'Em Transporte',
-      delivered: 'Entregue',
-      cancelled: 'Cancelado',
+  const getStatusLabel = (status: Order["status"]) => {
+    const labels: Record<Order["status"], string> = {
+      pending: "Pendente",
+      confirmed: "Confirmado",
+      production: "Em Produção",
+      shipping: "Em Transporte",
+      delivered: "Entregue",
+      cancelled: "Cancelado",
     };
     return labels[status];
   };
@@ -47,7 +54,7 @@ export function UserProfile({
   return (
     <>
       {/* Overlay */}
-      <div 
+      <div
         className="fixed inset-0 bg-fd-black/80 backdrop-blur-sm z-50"
         onClick={onClose}
       />
@@ -77,11 +84,16 @@ export function UserProfile({
                     <UserIcon className="w-8 h-8 text-fd-black" />
                   </div>
                   <div>
-                    <h3 className="text-fd-white font-display text-xl">{user.name}</h3>
+                    <h3 className="text-fd-white font-display text-xl">
+                      {user.name}
+                    </h3>
                     <p className="text-fd-white/60 text-sm">{user.email}</p>
                   </div>
                 </div>
-                <button onClick={onLogout} className="w-full btn-secondary py-2 text-sm">
+                <button
+                  onClick={onLogout}
+                  className="w-full btn-secondary py-2 text-sm"
+                >
                   <LogOut className="inline-block w-4 h-4 mr-2" />
                   Sair
                 </button>
@@ -90,16 +102,28 @@ export function UserProfile({
               {/* Stats */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="card-premium p-4 rounded-lg text-center">
-                  <div className="text-2xl font-display text-fd-gold mb-1">{orders.length}</div>
-                  <div className="text-xs text-fd-white/60 uppercase">Pedidos</div>
+                  <div className="text-2xl font-display text-fd-gold mb-1">
+                    {orders.length}
+                  </div>
+                  <div className="text-xs text-fd-white/60 uppercase">
+                    Pedidos
+                  </div>
                 </div>
                 <div className="card-premium p-4 rounded-lg text-center">
-                  <div className="text-2xl font-display text-fd-gold mb-1">{favorites.length}</div>
-                  <div className="text-xs text-fd-white/60 uppercase">Favoritos</div>
+                  <div className="text-2xl font-display text-fd-gold mb-1">
+                    {favorites.length}
+                  </div>
+                  <div className="text-xs text-fd-white/60 uppercase">
+                    Favoritos
+                  </div>
                 </div>
                 <div className="card-premium p-4 rounded-lg text-center">
-                  <div className="text-2xl font-display text-fd-gold mb-1">{user.addresses.length}</div>
-                  <div className="text-xs text-fd-white/60 uppercase">Endereços</div>
+                  <div className="text-2xl font-display text-fd-gold mb-1">
+                    {user.addresses.length}
+                  </div>
+                  <div className="text-xs text-fd-white/60 uppercase">
+                    Endereços
+                  </div>
                 </div>
               </div>
 
@@ -117,22 +141,32 @@ export function UserProfile({
                 ) : (
                   <div className="space-y-3">
                     {orders.map((order) => (
-                      <div key={order.id} className="card-premium p-4 rounded-lg">
+                      <div
+                        key={order.id}
+                        className="card-premium p-4 rounded-lg"
+                      >
                         <div className="flex items-start justify-between mb-3">
                           <div>
-                            <div className="text-fd-white font-display">Pedido #{order.id}</div>
+                            <div className="text-fd-white font-display">
+                              Pedido #{order.id}
+                            </div>
                             <div className="text-xs text-fd-white/60">
-                              {new Date(order.createdAt).toLocaleDateString('pt-BR')}
+                              {new Date(order.createdAt).toLocaleDateString(
+                                "pt-BR",
+                              )}
                             </div>
                           </div>
-                          <div className={`text-sm uppercase tracking-wider ${getStatusColor(order.status)}`}>
+                          <div
+                            className={`text-sm uppercase tracking-wider ${getStatusColor(order.status)}`}
+                          >
                             {getStatusLabel(order.status)}
                           </div>
                         </div>
-                        
+
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-fd-white/60">
-                            {order.items.length} {order.items.length === 1 ? 'item' : 'itens'}
+                            {order.items.length}{" "}
+                            {order.items.length === 1 ? "item" : "itens"}
                           </span>
                           <span className="text-fd-gold font-display text-lg">
                             R$ {order.total.toFixed(2)}
@@ -141,8 +175,12 @@ export function UserProfile({
 
                         {order.trackingCode && (
                           <div className="mt-3 pt-3 border-t border-fd-gray-lighter">
-                            <div className="text-xs text-fd-white/60 mb-1">Código de rastreamento:</div>
-                            <div className="text-sm text-fd-gold">{order.trackingCode}</div>
+                            <div className="text-xs text-fd-white/60 mb-1">
+                              Código de rastreamento:
+                            </div>
+                            <div className="text-sm text-fd-gold">
+                              {order.trackingCode}
+                            </div>
                           </div>
                         )}
                       </div>
@@ -159,7 +197,10 @@ export function UserProfile({
                 </h3>
                 <div className="space-y-3">
                   {user.addresses.map((address) => (
-                    <div key={address.id} className="card-premium p-4 rounded-lg">
+                    <div
+                      key={address.id}
+                      className="card-premium p-4 rounded-lg"
+                    >
                       {address.isDefault && (
                         <span className="inline-block px-2 py-1 bg-fd-gold/20 text-fd-gold text-xs uppercase tracking-wider rounded mb-2">
                           Principal
@@ -187,7 +228,7 @@ export function UserProfile({
               <p className="text-fd-white/60 mb-6">
                 Faça login para acessar seus pedidos, favoritos e muito mais.
               </p>
-              <button className="btn-primary px-8 py-3">
+              <button className="btn-primary btn-primary-lg px-8 py-3">
                 Entrar
               </button>
               <button className="btn-secondary px-8 py-3 mt-3">

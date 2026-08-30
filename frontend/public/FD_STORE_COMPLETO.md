@@ -18,11 +18,13 @@ Este arquivo contém TODO o código-fonte do site FD Store. Para usar:
 ## 🎯 FUNCIONALIDADES
 
 ### ✅ Linha de Moda
+
 - Gerenciamento completo de produtos (adicionar/editar/excluir)
 - Variedades configuráveis: modelos, cores, tecidos, tamanhos
 - Interface administrativa integrada
 
-### ✅ Uniformes Personalizados  
+### ✅ Uniformes Personalizados
+
 - Upload de artes (frente e verso separadamente)
 - 3 mockups lisos (Camiseta, Moletom, Polo)
 - Preview em tempo real com alternância frente/verso
@@ -30,6 +32,7 @@ Este arquivo contém TODO o código-fonte do site FD Store. Para usar:
 - 5 cores de tecido disponíveis
 
 ### ✅ E-commerce Completo
+
 - Carrinho de compras funcional
 - Sistema de favoritos
 - Área do cliente
@@ -47,7 +50,7 @@ FD_STORE/
 │   ├── types/
 │   │   └── index.ts
 │   ├── data/
-│   │   └── mockData.ts  
+│   │   └── mockData.ts
 │   ├── styles/
 │   │   └── globals.css
 │   ├── components/
@@ -73,6 +76,7 @@ FD_STORE/
 ## 🎨 IDENTIDADE VISUAL
 
 **Cores da Marca:**
+
 - Preto: `#000000`
 - Branco: `#ffffff`
 - Dourado: `#d4af37`
@@ -81,6 +85,7 @@ FD_STORE/
 - Cinza: `#1a1a1a`
 
 **Fontes:**
+
 - Display: Bebas Neue
 - Body: Inter
 
@@ -97,9 +102,14 @@ Devido ao tamanho do código, vou dividir em seções. Copie cada bloco para o a
 ```typescript
 // FD STORE - Sistema de Tipos Completo
 
-export type ProductCategory = 'camisetas' | 'moletons' | 'uniformes' | 'premium' | 'lancamentos';
+export type ProductCategory =
+  | "camisetas"
+  | "moletons"
+  | "uniformes"
+  | "premium"
+  | "lancamentos";
 
-export type ProductSize = 'PP' | 'P' | 'M' | 'G' | 'GG' | 'XG';
+export type ProductSize = "PP" | "P" | "M" | "G" | "GG" | "XG";
 
 export type ProductColor = {
   name: string;
@@ -111,7 +121,7 @@ export type Stamp = {
   id: string;
   name: string;
   imageUrl: string;
-  category: 'street' | 'minimal' | 'sport' | 'premium' | 'custom';
+  category: "street" | "minimal" | "sport" | "premium" | "custom";
   tags: string[];
   aiGenerated: boolean;
   createdAt: Date;
@@ -121,7 +131,7 @@ export type AICharacter = {
   id: string;
   name: string;
   imageUrl: string;
-  style: 'urban' | 'futuristic' | 'classic' | 'dynamic' | 'premium';
+  style: "urban" | "futuristic" | "classic" | "dynamic" | "premium";
   description: string;
   tags: string[];
   usageCount: number;
@@ -153,7 +163,7 @@ export type CustomizationOptions = {
   color: ProductColor;
   stampId?: string;
   customStamp?: {
-    type: 'upload' | 'ai-generated';
+    type: "upload" | "ai-generated";
     imageUrl?: string;
     aiPrompt?: string;
   };
@@ -170,7 +180,13 @@ export type CartItem = {
   subtotal: number;
 };
 
-export type OrderStatus = 'pending' | 'confirmed' | 'production' | 'shipping' | 'delivered' | 'cancelled';
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "production"
+  | "shipping"
+  | "delivered"
+  | "cancelled";
 
 export type Order = {
   id: string;
@@ -179,8 +195,8 @@ export type Order = {
   total: number;
   shippingCost: number;
   status: OrderStatus;
-  paymentMethod: 'pix' | 'card' | 'boleto';
-  paymentStatus: 'pending' | 'paid' | 'failed';
+  paymentMethod: "pix" | "card" | "boleto";
+  paymentStatus: "pending" | "paid" | "failed";
   shippingAddress: Address;
   trackingCode?: string;
   createdAt: Date;
@@ -215,7 +231,7 @@ export type Collection = {
   id: string;
   name: string;
   description: string;
-  theme: 'street' | 'futuristic' | 'dynamic' | 'premium' | 'minimal';
+  theme: "street" | "futuristic" | "dynamic" | "premium" | "minimal";
   products: Product[];
   character?: AICharacter;
   stamps: Stamp[];
@@ -266,11 +282,12 @@ export type AdminStats = {
   --color-primary: var(--color-fd-gold);
   --color-secondary: var(--color-fd-gray);
   --color-accent: var(--color-fd-gold-light);
-  
+
   /* Typography */
   --font-family-display: "Bebas Neue", "Arial Black", sans-serif;
-  --font-family-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  
+  --font-family-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
   /* Spacing */
   --spacing-section: 5rem;
   --spacing-container: 1.5rem;
@@ -278,19 +295,24 @@ export type AdminStats = {
 
 @layer base {
   @font-face {
-    font-family: 'Bebas Neue';
+    font-family: "Bebas Neue";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Bebas Neue'), local('BebasNeue-Regular'), url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXooxW5rygbi49c.woff2) format('woff2');
+    src:
+      local("Bebas Neue"),
+      local("BebasNeue-Regular"),
+      url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXooxW5rygbi49c.woff2)
+        format("woff2");
   }
 
   @font-face {
-    font-family: 'Inter';
+    font-family: "Inter";
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
+    src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2)
+      format("woff2");
   }
 
   * {
@@ -311,7 +333,12 @@ export type AdminStats = {
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-family-display);
     font-weight: 400;
     line-height: 1.1;
@@ -352,7 +379,9 @@ export type AdminStats = {
     background: none;
   }
 
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     font-family: var(--font-family-body);
   }
 }
@@ -365,11 +394,21 @@ export type AdminStats = {
   }
 
   .gold-gradient {
-    background: linear-gradient(135deg, var(--color-fd-gold-dark) 0%, var(--color-fd-gold) 50%, var(--color-fd-gold-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-fd-gold-dark) 0%,
+      var(--color-fd-gold) 50%,
+      var(--color-fd-gold-light) 100%
+    );
   }
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, var(--color-fd-gold-dark) 0%, var(--color-fd-gold) 50%, var(--color-fd-gold-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-fd-gold-dark) 0%,
+      var(--color-fd-gold) 50%,
+      var(--color-fd-gold-light) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -384,7 +423,7 @@ export type AdminStats = {
     transform: translateY(-2px);
   }
 
-  .btn-primary {
+  .btn-primary btn-primary-lg {
     background: var(--color-fd-gold);
     color: var(--color-fd-black);
     padding: 1rem 2.5rem;
@@ -418,7 +457,11 @@ export type AdminStats = {
   }
 
   .card-premium {
-    background: linear-gradient(145deg, var(--color-fd-gray) 0%, var(--color-fd-black) 100%);
+    background: linear-gradient(
+      145deg,
+      var(--color-fd-gray) 0%,
+      var(--color-fd-black) 100%
+    );
     border: 1px solid var(--color-fd-gray-lighter);
     transition: all 0.3s ease;
   }
@@ -470,6 +513,7 @@ Este documento contém a PARTE 1 do código completo. Os arquivos dos componente
 
 1. **Copie cada arquivo** para sua respectiva pasta
 2. **Instale as dependências:**
+
    ```bash
    npm install react lucide-react
    ```
@@ -497,4 +541,4 @@ Exemplo: "Mostre o código completo de UniformCustomizer.tsx"
 ---
 
 **FD STORE | FORT DYNAMIC**
-*Vista-se com Autoridade* ✨
+_Vista-se com Autoridade_ ✨

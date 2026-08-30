@@ -51,7 +51,10 @@ export function Hero({ onCTAClick }: HeroProps) {
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button onClick={onCTAClick} className="btn-primary min-w-[200px]">
+            <button
+              onClick={onCTAClick}
+              className="btn-primary btn-primary-lg min-w-[200px]"
+            >
               Explorar Coleção
               <ArrowRight className="inline-block ml-2 w-5 h-5" />
             </button>

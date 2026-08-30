@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Heart, ShoppingCart, Eye, Sparkles } from 'lucide-react';
-import type { Product } from '../types';
+import { useState } from "react";
+import { Heart, ShoppingCart, Eye, Sparkles } from "lucide-react";
+import type { Product } from "../types";
 
 type ProductCardProps = {
   product: Product;
@@ -10,12 +10,12 @@ type ProductCardProps = {
   isFavorite: boolean;
 };
 
-export function ProductCard({ 
-  product, 
-  onQuickView, 
-  onAddToCart, 
+export function ProductCard({
+  product,
+  onQuickView,
+  onAddToCart,
   onToggleFavorite,
-  isFavorite 
+  isFavorite,
 }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -33,7 +33,7 @@ export function ProductCard({
   };
 
   return (
-    <div 
+    <div
       className="card-premium rounded-lg overflow-hidden group"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -45,7 +45,7 @@ export function ProductCard({
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {product.isNew && (
@@ -70,13 +70,15 @@ export function ProductCard({
           className="absolute top-3 right-3 p-2 bg-fd-black/60 hover:bg-fd-gold transition-colors rounded-full"
           aria-label="Favoritar"
         >
-          <Heart 
-            className={`w-5 h-5 ${isFavorite ? 'fill-fd-gold text-fd-gold' : 'text-fd-white'}`}
+          <Heart
+            className={`w-5 h-5 ${isFavorite ? "fill-fd-gold text-fd-gold" : "text-fd-white"}`}
           />
         </button>
 
         {/* Hover Actions */}
-        <div className={`absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-fd-black to-transparent transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
+        <div
+          className={`absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-fd-black to-transparent transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"}`}
+        >
           <div className="flex gap-2">
             <button
               onClick={() => onQuickView(product)}
@@ -87,7 +89,7 @@ export function ProductCard({
             </button>
             <button
               onClick={() => onAddToCart(product)}
-              className="flex-1 btn-primary py-3 text-sm"
+              className="flex-1 btn-primary btn-primary-lg py-3 text-sm"
             >
               <ShoppingCart className="inline-block w-4 h-4 mr-2" />
               Adicionar
@@ -101,7 +103,7 @@ export function ProductCard({
         <h3 className="font-display text-lg text-fd-white mb-2 truncate">
           {product.name}
         </h3>
-        
+
         <p className="text-sm text-fd-white/60 mb-3 line-clamp-2 h-10">
           {product.description}
         </p>
@@ -117,7 +119,9 @@ export function ProductCard({
             />
           ))}
           {product.colors.length > 4 && (
-            <span className="text-xs text-fd-white/40">+{product.colors.length - 4}</span>
+            <span className="text-xs text-fd-white/40">
+              +{product.colors.length - 4}
+            </span>
           )}
         </div>
 
@@ -127,9 +131,11 @@ export function ProductCard({
             <span className="text-2xl font-display text-fd-gold">
               R$ {product.basePrice.toFixed(2)}
             </span>
-            <span className="text-xs text-fd-white/40 block">à vista no PIX</span>
+            <span className="text-xs text-fd-white/40 block">
+              à vista no PIX
+            </span>
           </div>
-          
+
           {product.stockQuantity < 10 && (
             <span className="text-xs text-orange-400 uppercase">
               Últimas unidades!

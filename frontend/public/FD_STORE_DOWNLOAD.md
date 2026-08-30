@@ -1,8 +1,9 @@
 # 🏪 FD STORE | FORT DYNAMIC
+
 ## CÓDIGO COMPLETO PARA DOWNLOAD
 
 > **E-commerce Premium com Sistema de Personalização de Uniformes**
-> 
+>
 > Desenvolvido com React + TypeScript + Tailwind CSS v4
 
 ---
@@ -25,6 +26,7 @@
 **Estilo:** Premium, Moderno, Urbano, Autoritário
 
 ### Cores da Marca:
+
 - **Preto:** `#000000`
 - **Branco:** `#ffffff`
 - **Dourado:** `#d4af37`
@@ -33,6 +35,7 @@
 - **Cinza:** `#1a1a1a`
 
 ### Fontes:
+
 - **Display:** Bebas Neue
 - **Body:** Inter
 
@@ -100,6 +103,7 @@ fd-store/
 ## ✨ FUNCIONALIDADES
 
 ### ✅ 1. LINHA DE MODA
+
 - Gerenciamento completo de produtos
 - Adicionar/Editar/Excluir produtos
 - Variedades: Modelos, Cores, Tecidos, Tamanhos
@@ -111,6 +115,7 @@ fd-store/
   - Moletom com Capuz
 
 ### ✅ 2. UNIFORMES PERSONALIZADOS
+
 - Upload de artes (frente e verso separadamente)
 - 3 mockups lisos:
   - Camiseta Básica Lisa (R$ 89,90)
@@ -125,6 +130,7 @@ fd-store/
 - Cálculo automático de preço
 
 ### ✅ 3. E-COMMERCE COMPLETO
+
 - Carrinho de compras funcional
 - Sistema de favoritos
 - Quick View de produtos
@@ -135,6 +141,7 @@ fd-store/
   - Produtos favoritados
 
 ### ✅ 4. COLEÇÕES E CATÁLOGO
+
 - Lançamentos
 - Coleções temáticas
 - Premium Collection
@@ -167,6 +174,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 Copie o código completo do App.tsx que está no seu projeto atual.
 Ele contém:
+
 - Gerenciamento de estado completo
 - Handlers de carrinho
 - Handlers de favoritos
@@ -185,9 +193,14 @@ Ele contém:
 ```typescript
 // FD STORE - Sistema de Tipos Completo
 
-export type ProductCategory = 'camisetas' | 'moletons' | 'uniformes' | 'premium' | 'lancamentos';
+export type ProductCategory =
+  | "camisetas"
+  | "moletons"
+  | "uniformes"
+  | "premium"
+  | "lancamentos";
 
-export type ProductSize = 'PP' | 'P' | 'M' | 'G' | 'GG' | 'XG';
+export type ProductSize = "PP" | "P" | "M" | "G" | "GG" | "XG";
 
 export type ProductColor = {
   name: string;
@@ -199,7 +212,7 @@ export type Stamp = {
   id: string;
   name: string;
   imageUrl: string;
-  category: 'street' | 'minimal' | 'sport' | 'premium' | 'custom';
+  category: "street" | "minimal" | "sport" | "premium" | "custom";
   tags: string[];
   aiGenerated: boolean;
   createdAt: Date;
@@ -209,7 +222,7 @@ export type AICharacter = {
   id: string;
   name: string;
   imageUrl: string;
-  style: 'urban' | 'futuristic' | 'classic' | 'dynamic' | 'premium';
+  style: "urban" | "futuristic" | "classic" | "dynamic" | "premium";
   description: string;
   tags: string[];
   usageCount: number;
@@ -241,7 +254,7 @@ export type CustomizationOptions = {
   color: ProductColor;
   stampId?: string;
   customStamp?: {
-    type: 'upload' | 'ai-generated';
+    type: "upload" | "ai-generated";
     imageUrl?: string;
     aiPrompt?: string;
   };
@@ -258,7 +271,13 @@ export type CartItem = {
   subtotal: number;
 };
 
-export type OrderStatus = 'pending' | 'confirmed' | 'production' | 'shipping' | 'delivered' | 'cancelled';
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "production"
+  | "shipping"
+  | "delivered"
+  | "cancelled";
 
 export type Order = {
   id: string;
@@ -267,8 +286,8 @@ export type Order = {
   total: number;
   shippingCost: number;
   status: OrderStatus;
-  paymentMethod: 'pix' | 'card' | 'boleto';
-  paymentStatus: 'pending' | 'paid' | 'failed';
+  paymentMethod: "pix" | "card" | "boleto";
+  paymentStatus: "pending" | "paid" | "failed";
   shippingAddress: Address;
   trackingCode?: string;
   createdAt: Date;
@@ -303,7 +322,7 @@ export type Collection = {
   id: string;
   name: string;
   description: string;
-  theme: 'street' | 'futuristic' | 'dynamic' | 'premium' | 'minimal';
+  theme: "street" | "futuristic" | "dynamic" | "premium" | "minimal";
   products: Product[];
   character?: AICharacter;
   stamps: Stamp[];
@@ -354,11 +373,12 @@ export type AdminStats = {
   --color-primary: var(--color-fd-gold);
   --color-secondary: var(--color-fd-gray);
   --color-accent: var(--color-fd-gold-light);
-  
+
   /* Typography */
   --font-family-display: "Bebas Neue", "Arial Black", sans-serif;
-  --font-family-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  
+  --font-family-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
   /* Spacing */
   --spacing-section: 5rem;
   --spacing-container: 1.5rem;
@@ -366,19 +386,24 @@ export type AdminStats = {
 
 @layer base {
   @font-face {
-    font-family: 'Bebas Neue';
+    font-family: "Bebas Neue";
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Bebas Neue'), local('BebasNeue-Regular'), url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXooxW5rygbi49c.woff2) format('woff2');
+    src:
+      local("Bebas Neue"),
+      local("BebasNeue-Regular"),
+      url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXooxW5rygbi49c.woff2)
+        format("woff2");
   }
 
   @font-face {
-    font-family: 'Inter';
+    font-family: "Inter";
     font-style: normal;
     font-weight: 100 900;
     font-display: swap;
-    src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
+    src: url(https://fonts.gstatic.com/s/inter/v13/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2)
+      format("woff2");
   }
 
   * {
@@ -399,7 +424,12 @@ export type AdminStats = {
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-family-display);
     font-weight: 400;
     line-height: 1.1;
@@ -440,7 +470,9 @@ export type AdminStats = {
     background: none;
   }
 
-  input, textarea, select {
+  input,
+  textarea,
+  select {
     font-family: var(--font-family-body);
   }
 }
@@ -453,11 +485,21 @@ export type AdminStats = {
   }
 
   .gold-gradient {
-    background: linear-gradient(135deg, var(--color-fd-gold-dark) 0%, var(--color-fd-gold) 50%, var(--color-fd-gold-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-fd-gold-dark) 0%,
+      var(--color-fd-gold) 50%,
+      var(--color-fd-gold-light) 100%
+    );
   }
 
   .text-gold-gradient {
-    background: linear-gradient(135deg, var(--color-fd-gold-dark) 0%, var(--color-fd-gold) 50%, var(--color-fd-gold-light) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-fd-gold-dark) 0%,
+      var(--color-fd-gold) 50%,
+      var(--color-fd-gold-light) 100%
+    );
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -472,7 +514,7 @@ export type AdminStats = {
     transform: translateY(-2px);
   }
 
-  .btn-primary {
+  .btn-primary btn-primary-lg {
     background: var(--color-fd-gold);
     color: var(--color-fd-black);
     padding: 1rem 2.5rem;
@@ -506,7 +548,11 @@ export type AdminStats = {
   }
 
   .card-premium {
-    background: linear-gradient(145deg, var(--color-fd-gray) 0%, var(--color-fd-black) 100%);
+    background: linear-gradient(
+      145deg,
+      var(--color-fd-gray) 0%,
+      var(--color-fd-black) 100%
+    );
     border: 1px solid var(--color-fd-gray-lighter);
     transition: all 0.3s ease;
   }
@@ -574,7 +620,9 @@ export type AdminStats = {
 **Este documento contém os arquivos principais. Para os COMPONENTES REACT completos, você tem 2 opções:**
 
 ### OPÇÃO 1: Copiar do Projeto Atual ✅
+
 Todos os arquivos abaixo estão funcionando perfeitamente:
+
 - `/components/ProductManager.tsx` (482 linhas)
 - `/components/UniformCustomizer.tsx` (482 linhas)
 - `/components/Header.tsx` (114 linhas)
@@ -590,7 +638,9 @@ Todos os arquivos abaixo estão funcionando perfeitamente:
 - `/data/mockData.ts`
 
 ### OPÇÃO 2: Solicitar Arquivo Individual 📦
+
 Peça qualquer arquivo específico:
+
 ```
 "Mostre o código completo de [nome-do-arquivo]"
 ```
@@ -613,7 +663,7 @@ Para obter os componentes completos que faltam, peça:
 
 ```
 "Mostre /components/ProductManager.tsx completo"
-"Mostre /components/UniformCustomizer.tsx completo"  
+"Mostre /components/UniformCustomizer.tsx completo"
 "Mostre /data/mockData.ts completo"
 ```
 
@@ -622,7 +672,7 @@ Ou eu posso criar um **ARQUIVO PARTE 2** com todos os componentes React!
 ---
 
 **FD STORE | FORT DYNAMIC**  
-*Vista-se com Autoridade* ✨
+_Vista-se com Autoridade_ ✨
 
 ---
 
@@ -639,4 +689,4 @@ Ou use a funcionalidade de export do Figma Make.
 
 ---
 
-*Documento gerado em 27/01/2026*
+_Documento gerado em 27/01/2026_
