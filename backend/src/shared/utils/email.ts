@@ -3,7 +3,13 @@ import { Resend } from 'resend'
 import { env } from '../../config/env'
 import { logger } from '../../config/logger'
 
-const resend = new Resend(env.RESEND_API_KEY)
+function getResendClient(): Resend {
+  if (!env.RESEND_API_KEY) {
+    throw new Error('Resend não está configurado.')
+  }
+
+  return new Resend(env.RESEND_API_KEY)
+}
 
 interface SendEmailOptions {
   to: string
@@ -12,6 +18,7 @@ interface SendEmailOptions {
 }
 
 export async function sendEmail({ to, subject, html }: SendEmailOptions): Promise<void> {
+  const resend = getResendClient()
   try {
     await resend.emails.send({
       from: `${env.FROM_NAME} <${env.FROM_EMAIL}>`,
