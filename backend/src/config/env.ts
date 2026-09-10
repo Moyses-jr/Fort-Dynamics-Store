@@ -15,19 +15,22 @@ const envSchema = z.object({
   JWT_EXPIRES_IN: z.string().default('15m'),
   JWT_REFRESH_EXPIRES_IN: z.string().default('7d'),
 
-  MP_ACCESS_TOKEN: z.string().min(1),
-  MP_WEBHOOK_SECRET: z.string().min(1),
-  MP_NOTIFICATION_URL: z.string().url(),
+  // Mercado Pago — opcional enquanto não estiver em uso
+  MP_ACCESS_TOKEN: z.string().min(1).optional(),
+  MP_WEBHOOK_SECRET: z.string().min(1).optional(),
+  MP_NOTIFICATION_URL: z.string().url().optional(),
 
-  RESEND_API_KEY: z.string().min(1),
-  FROM_EMAIL: z.string().email(),
+  // Resend — opcional enquanto não estiver em uso
+  RESEND_API_KEY: z.string().min(1).optional(),
+  FROM_EMAIL: z.string().email().optional(),
   FROM_NAME: z.string().default('FD Store'),
 
-  R2_ACCOUNT_ID: z.string().min(1),
-  R2_ACCESS_KEY_ID: z.string().min(1),
-  R2_SECRET_ACCESS_KEY: z.string().min(1),
-  R2_BUCKET: z.string().min(1),
-  R2_PUBLIC_URL: z.string().url(),
+  // Cloudflare R2 — opcional enquanto não estiver em uso
+  R2_ACCOUNT_ID: z.string().min(1).optional(),
+  R2_ACCESS_KEY_ID: z.string().min(1).optional(),
+  R2_SECRET_ACCESS_KEY: z.string().min(1).optional(),
+  R2_BUCKET: z.string().min(1).optional(),
+  R2_PUBLIC_URL: z.string().url().optional(),
 
   BCRYPT_ROUNDS: z.coerce.number().default(12),
 })

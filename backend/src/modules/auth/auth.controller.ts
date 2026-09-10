@@ -1,14 +1,15 @@
 // src/modules/auth/auth.controller.ts
 import { Request, Response } from 'express'
 import { authService } from './auth.service'
+import { env } from '../../config/env'
 import type { RegisterDto, LoginDto, ForgotPasswordDto, ResetPasswordDto } from './auth.schema'
 
-const COOKIE_OPTIONS = {
-  httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict' as const,
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 dias em ms
-}
+ const COOKIE_OPTIONS = {
+   httpOnly: true,
+   secure: env.NODE_ENV === 'production',
+   sameSite: (env.NODE_ENV === 'production' ? 'none' : 'lax') as 'none' | 'lax',
+   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 dias em ms
+ }
 
 export class AuthController {
   async register(req: Request, res: Response): Promise<void> {
@@ -53,7 +54,12 @@ export class AuthController {
 
     await authService.logout(accessToken, refreshToken)
 
-    res.clearCookie('refresh_token')
+
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production',
+      sameSite: env.NODE_ENV === 'production' ? 'none' : 'lax',
+    })
     res.status(204).send()
   }
 

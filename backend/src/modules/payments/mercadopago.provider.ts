@@ -4,12 +4,20 @@ import { env } from '../../config/env'
 import { PaymentError } from '../../shared/errors/AppError'
 import { Prisma } from '@prisma/client'
 
-const client = new MercadoPagoConfig({
-  accessToken: env.MP_ACCESS_TOKEN,
-  options: { timeout: 5000 },
-})
+function createMercadoPagoClient(): MercadoPagoConfig | null {
+  if (!env.MP_ACCESS_TOKEN) {
+    return null
+  }
 
-const mpPayment = new MpPayment(client)
+  return new MercadoPagoConfig({
+    accessToken: env.MP_ACCESS_TOKEN!,
+    options: { timeout: 5000 },
+  })
+}
+
+const client = createMercadoPagoClient()
+
+const mpPayment = client ? new MpPayment(client) : null
 
 type JsonObject = {
   [key: string]: Prisma.InputJsonValue
@@ -49,6 +57,9 @@ export async function createPixPayment(params: {
   payer: PayerData
 }): Promise<PixResult> {
   try {
+    if (!mpPayment) {
+      throw new Error('Mercado Pago não está configurado.')
+    }
     const response = await mpPayment.create({
       body: {
         transaction_amount: params.amount,
@@ -96,6 +107,9 @@ export async function createCardPayment(params: {
   payer: PayerData
 }): Promise<CardResult> {
   try {
+    if (!mpPayment) {
+      throw new Error('Mercado Pago não está configurado.')
+    }
     const response = await mpPayment.create({
       body: {
         transaction_amount: params.amount,
@@ -139,6 +153,10 @@ export async function createBoletoPayment(params: {
   }
 }): Promise<BoletoResult> {
   try {
+    if (!mpPayment) {
+      throw new Error('Mercado Pago não está configurado.')
+    }
+
     const expiresAt = new Date()
     expiresAt.setDate(expiresAt.getDate() + 3) // 3 dias
 

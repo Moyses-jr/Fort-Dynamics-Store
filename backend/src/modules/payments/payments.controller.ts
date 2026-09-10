@@ -47,8 +47,14 @@ export class PaymentsController {
         }
 
         const manifest = `id:${String(body.data?.id ?? '')};request-id:${requestId};ts:${ts};`
+
+        const webhookSecret = env.MP_WEBHOOK_SECRET
+        if (!webhookSecret) {
+          throw new Error('Mercado Pago webhook não está configurado.')
+        }
+
         const expectedHash = crypto
-          .createHmac('sha256', env.MP_WEBHOOK_SECRET)
+          .createHmac('sha256', webhookSecret)
           .update(manifest)
           .digest('hex')
 

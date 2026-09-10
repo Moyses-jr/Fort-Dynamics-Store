@@ -4,14 +4,26 @@ import { env } from '../../config/env'
 import { v4 as uuidv4 } from 'uuid'
 import path from 'path'
 
-const r2 = new S3Client({
-  region: 'auto',
-  endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: env.R2_ACCESS_KEY_ID,
-    secretAccessKey: env.R2_SECRET_ACCESS_KEY,
-  },
-})
+function createR2Client(): S3Client | null {
+  if (
+    !env.R2_ACCOUNT_ID ||
+    !env.R2_ACCESS_KEY_ID ||
+    !env.R2_SECRET_ACCESS_KEY
+  ) {
+    return null
+  }
+
+  return new S3Client({
+    region: 'auto',
+    endpoint: `https://${env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: env.R2_ACCESS_KEY_ID,
+      secretAccessKey: env.R2_SECRET_ACCESS_KEY,
+    },
+  })
+}
+
+const r2 = createR2Client()
 
 const ALLOWED_TYPES = ['image/png', 'image/jpeg', 'image/jpg', 'image/svg+xml', 'image/webp']
 const MAX_SIZE_BYTES = 5 * 1024 * 1024 // 5MB
@@ -32,6 +44,10 @@ export async function uploadFile(
   mimetype: string,
   folder = 'arts',
 ): Promise<{ key: string; url: string }> {
+  if (!r2) {
+    throw new Error('Upload de arquivos não está configurado.')
+  }
+
   const ext = path.extname(originalName).toLowerCase()
   const key = `${folder}/${uuidv4()}${ext}`
 
@@ -52,6 +68,10 @@ export async function uploadFile(
 }
 
 export async function deleteFile(key: string): Promise<void> {
+  if (!r2) {
+    throw new Error('Upload de arquivos não está configurado.')
+  }
+
   await r2.send(
     new DeleteObjectCommand({
       Bucket: env.R2_BUCKET,
