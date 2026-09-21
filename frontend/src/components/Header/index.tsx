@@ -30,6 +30,7 @@ export function Header({
   const hanldeMobileMenuOpen = () => {
     setSearchOpen(!searchOpen);
   };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-fd-black/95 backdrop-blur-md border-b border-fd-gray-lighter">
       <div className="container-fd">

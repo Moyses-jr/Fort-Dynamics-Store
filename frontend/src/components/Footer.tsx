@@ -184,7 +184,7 @@ export function Footer() {
               className="h-6 opacity-60"
             />
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg"
+              src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Visa_Inc._logo_%282021%E2%80%93present%29.svg"
               alt="Visa"
               className="h-6 opacity-60"
             />
