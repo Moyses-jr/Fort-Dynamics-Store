@@ -12,7 +12,6 @@ import { useOrders } from "../hooks/useOrders";
 import { useAddresses, useFavorites } from "../hooks/useUserProfile";
 import type { CartItem } from "../types";
 import { resolveVariantId } from "../lib/variantResolver";
-import { AdminPanel } from "../components/AdminPanel";
 import { UniformCustomizer } from "../components/UniformCustomizer";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
@@ -397,8 +396,6 @@ export default function Home() {
         shipping={shipping}
         total={total}
       />
-
-      {/* <AdminPanel isOpen={isAdminOpen} onClose={() => setIsAdminOpen(false)} /> */}
     </div>
   );
 }

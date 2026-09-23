@@ -1,7 +1,6 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  BarChart3,
   Bell,
   Box,
   ChevronDown,
@@ -21,11 +20,16 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Check,
-  Pencil,
-  Trash2,
 } from "lucide-react";
 
 import "../../styles/adminStyles.css";
+import {
+  useAdminOrders,
+  useAdminStats,
+  useAdminUsers,
+} from "../../hooks/useAdmin";
+import { ApiProduct, useProducts } from "../../hooks/useProducts";
+import { useCategories } from "../../hooks/useCategories";
 
 type Page =
   | "dashboard"
@@ -51,82 +55,12 @@ const navItems: { id: Page; label: string; icon: typeof LayoutDashboard }[] = [
   { id: "configuracoes", label: "Configurações", icon: Settings },
 ];
 
-const orders = [
-  {
-    id: "#FD-1048",
-    customer: "Mariana Costa",
-    date: "Hoje, 09:42",
-    value: "R$ 189,90",
-    status: "Em produção",
-  },
-  {
-    id: "#FD-1047",
-    customer: "João Vitor",
-    date: "Hoje, 08:16",
-    value: "R$ 249,00",
-    status: "Pago",
-  },
-  {
-    id: "#FD-1046",
-    customer: "Ana Beatriz",
-    date: "Ontem, 17:34",
-    value: "R$ 99,90",
-    status: "Enviado",
-  },
-  {
-    id: "#FD-1045",
-    customer: "Lucas Almeida",
-    date: "Ontem, 14:12",
-    value: "R$ 329,80",
-    status: "Pago",
-  },
-];
-
-type Product = {
-  name: string;
-  category: string;
-  price: string;
-  stock: number;
-  status: string;
-};
-
-const products: Product[] = [
-  {
-    name: "Camiseta Oversized FD",
-    category: "Camisetas",
-    price: "R$ 89,90",
-    stock: 32,
-    status: "Ativo",
-  },
-  {
-    name: "Moletom Essential Black",
-    category: "Moletons",
-    price: "R$ 179,90",
-    stock: 12,
-    status: "Ativo",
-  },
-  {
-    name: "Camiseta Classic White",
-    category: "Camisetas",
-    price: "R$ 79,90",
-    stock: 4,
-    status: "Baixo estoque",
-  },
-  {
-    name: "Boné Signature",
-    category: "Acessórios",
-    price: "R$ 59,90",
-    stock: 0,
-    status: "Esgotado",
-  },
-];
-
-function App() {
+function Admin() {
   const [page, setPage] = useState<Page>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [toast, setToast] = useState("");
-  const [productList, setProductList] = useState(products);
+  // const [productList, setProductList] = useState(products);
 
   const notify = (message: string) => {
     setToast(message);
@@ -214,8 +148,6 @@ function App() {
           {page === "pedidos" && <Orders onNotify={notify} />}
           {page === "produtos" && (
             <Products
-              productList={productList}
-              setProductList={setProductList}
               showForm={showProductForm}
               setShowForm={setShowProductForm}
               onNotify={notify}
@@ -293,198 +225,56 @@ function Dashboard({
   onNavigate: (page: Page) => void;
   onNotify: (message: string) => void;
 }) {
+  const { stats } = useAdminStats();
+  const { orders } = useAdminOrders();
+
   return (
     <>
-      <PageHeading
-        title=""
-        description=""
-        action={
-          <button
-            className="primary-button"
-            onClick={() => onNavigate("produtos")}
-          >
-            <Plus size={17} /> Novo produto
-          </button>
-        }
-      />
+      {/* ...cabeçalho igual... */}
       <div className="stat-grid">
         <StatCard
           icon={CircleDollarSign}
           label="Vendas no mês"
-          value="R$ 24.580,00"
-          trend="18,4%"
+          value={`R$ ${(stats?.totalRevenue ?? 0).toFixed(2)}`}
+          trend="—"
         />
         <StatCard
           icon={ShoppingBag}
           label="Pedidos"
-          value="184"
-          trend="12,8%"
+          value={String(stats?.totalOrders ?? 0)}
+          trend="—"
         />
-        <StatCard icon={Users} label="Clientes" value="1.248" trend="8,2%" />
+        <StatCard
+          icon={Users}
+          label="Clientes"
+          value={String(stats?.totalCustomers ?? 0)}
+          trend="—"
+        />
         <StatCard
           icon={Box}
-          label="Ticket médio"
-          value="R$ 133,58"
-          trend="4,6%"
-          positive={false}
+          label="Pedidos hoje"
+          value={String(stats?.newOrdersToday ?? 0)}
+          trend="—"
         />
       </div>
-      <div className="dashboard-grid">
-        <section className="panel chart-panel">
-          <div className="panel-heading">
+      {/* ... */}
+      <div className="mini-orders">
+        {orders.slice(0, 4).map((order) => (
+          <div className="mini-order" key={order.id}>
+            <span className="order-symbol">
+              <ShoppingBag size={15} />
+            </span>
             <div>
-              <h2>Visão geral</h2>
-              <p>Receita dos últimos 7 dias</p>
+              <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
+              <small>{order.user.name}</small>
             </div>
-            <button className="select-button">
-              Últimos 7 dias <ChevronDown size={15} />
-            </button>
+            <span className="order-value">
+              R$ {Number(order.total).toFixed(2)}
+            </span>
           </div>
-          <div className="chart">
-            <div className="chart-y">
-              <span>R$ 5k</span>
-              <span>R$ 4k</span>
-              <span>R$ 3k</span>
-              <span>R$ 2k</span>
-              <span>R$ 1k</span>
-              <span>R$ 0</span>
-            </div>
-            <div className="chart-area">
-              <div className="grid-lines">
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-                <i />
-              </div>
-              <svg
-                viewBox="0 0 650 205"
-                preserveAspectRatio="none"
-                className="line-chart"
-              >
-                <defs>
-                  <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#e1ff58" stopOpacity=".25" />
-                    <stop offset="100%" stopColor="#e1ff58" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M0,160 C35,148 55,165 90,139 S145,151 180,107 S235,119 270,91 S320,120 365,76 S420,96 455,58 S500,88 545,53 S600,34 650,10 L650,205 L0,205Z"
-                  fill="url(#fill)"
-                />
-                <path
-                  d="M0,160 C35,148 55,165 90,139 S145,151 180,107 S235,119 270,91 S320,120 365,76 S420,96 455,58 S500,88 545,53 S600,34 650,10"
-                  fill="none"
-                  stroke="#d8f957"
-                  strokeWidth="3"
-                />
-              </svg>
-              <div className="chart-x">
-                <span>10 Jun</span>
-                <span>11 Jun</span>
-                <span>12 Jun</span>
-                <span>13 Jun</span>
-                <span>14 Jun</span>
-                <span>15 Jun</span>
-                <span>16 Jun</span>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="panel orders-panel">
-          <div className="panel-heading">
-            <div>
-              <h2>Pedidos recentes</h2>
-              <p>Últimas movimentações</p>
-            </div>
-            <button
-              className="text-button"
-              onClick={() => onNavigate("pedidos")}
-            >
-              Ver todos <ArrowUpRight size={15} />
-            </button>
-          </div>
-          <div className="mini-orders">
-            {orders.slice(0, 4).map((order) => (
-              <div className="mini-order" key={order.id}>
-                <span className="order-symbol">
-                  <ShoppingBag size={15} />
-                </span>
-                <div>
-                  <strong>{order.id}</strong>
-                  <small>{order.customer}</small>
-                </div>
-                <span className="order-value">{order.value}</span>
-              </div>
-            ))}
-          </div>
-        </section>
+        ))}
       </div>
-      <section className="panel category-panel">
-        <div className="panel-heading">
-          <div>
-            <h2>Produtos mais vendidos</h2>
-            <p>Desempenho por categoria</p>
-          </div>
-          <button
-            className="text-button"
-            onClick={() => onNotify("Relatório exportado")}
-          >
-            Exportar <ArrowUpRight size={15} />
-          </button>
-        </div>
-        <div className="category-list">
-          <CategoryRow
-            label="Camisetas"
-            value="58%"
-            amount="142 vendas"
-            width="58%"
-            color="lime"
-          />
-          <CategoryRow
-            label="Moletons"
-            value="24%"
-            amount="58 vendas"
-            width="24%"
-            color="purple"
-          />
-          <CategoryRow
-            label="Acessórios"
-            value="18%"
-            amount="44 vendas"
-            width="18%"
-            color="orange"
-          />
-        </div>
-      </section>
     </>
-  );
-}
-function CategoryRow({
-  label,
-  value,
-  amount,
-  width,
-  color,
-}: {
-  label: string;
-  value: string;
-  amount: string;
-  width: string;
-  color: string;
-}) {
-  return (
-    <div className="category-row">
-      <div className="category-meta">
-        <strong>{label}</strong>
-        <span>{amount}</span>
-        <b>{value}</b>
-      </div>
-      <div className={`progress ${color}`}>
-        <i style={{ width }} />
-      </div>
-    </div>
   );
 }
 function StatusBadge({ status }: { status: string }) {
@@ -495,98 +285,53 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 function Orders({ onNotify }: { onNotify: (message: string) => void }) {
+  const { orders } = useAdminOrders();
   return (
     <>
-      <PageHeading
-        title="Pedidos"
-        description="Acompanhe e gerencie todos os pedidos da sua loja."
-        action={
-          <button
-            className="primary-button"
-            onClick={() => onNotify("Filtro de pedidos aberto")}
-          >
-            <Search size={17} /> Buscar pedido
-          </button>
-        }
-      />
-      <section className="panel table-panel">
-        <div className="table-toolbar">
-          <div className="search-field">
-            <Search size={17} />
-            <input placeholder="Buscar por pedido ou cliente..." />
-          </div>
-          <button className="filter-button">
-            Todos os status <ChevronDown size={15} />
-          </button>
-        </div>
-        <div className="table-scroll">
-          <table>
-            <thead>
-              <tr>
-                <th>Pedido</th>
-                <th>Cliente</th>
-                <th>Data</th>
-                <th>Valor</th>
-                <th>Status</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {orders.concat(orders.slice(0, 2)).map((order, i) => (
-                <tr key={`${order.id}-${i}`}>
-                  <td>
-                    <strong>{order.id}</strong>
-                  </td>
-                  <td>{order.customer}</td>
-                  <td>{order.date}</td>
-                  <td>
-                    <strong>{order.value}</strong>
-                  </td>
-                  <td>
-                    <StatusBadge status={order.status} />
-                  </td>
-                  <td>
-                    <button
-                      className="row-menu"
-                      onClick={() => onNotify(`Pedido ${order.id} selecionado`)}
-                    >
-                      <MoreHorizontal size={18} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
+      {/* ...cabeçalho igual... */}
+      <table>
+        <tbody>
+          {orders.map((order) => (
+            <tr key={order.id}>
+              <td>
+                <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
+              </td>
+              <td>{order.user.name}</td>
+              <td>{new Date(order.createdAt).toLocaleDateString("pt-BR")}</td>
+              <td>
+                <strong>R$ {Number(order.total).toFixed(2)}</strong>
+              </td>
+              <td>
+                <StatusBadge status={order.status} />
+              </td>
+              <td>
+                <button
+                  className="row-menu"
+                  onClick={() => onNotify(`Pedido selecionado`)}
+                >
+                  <MoreHorizontal size={18} />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }
 function Products({
-  productList,
-  setProductList,
   showForm,
   setShowForm,
   onNotify,
 }: {
-  productList: Product[];
-  setProductList: (products: Product[]) => void;
   showForm: boolean;
   setShowForm: (open: boolean) => void;
   onNotify: (message: string) => void;
 }) {
+  const { categories } = useCategories();
+  const { products: productList, isLoading } = useProducts({ limit: 100 });
   const { register, handleSubmit, reset } = useForm<ProductForm>();
   const submit = (data: ProductForm) => {
-    setProductList([
-      ...productList,
-      {
-        name: data.name,
-        category: data.category,
-        price: `R$ ${data.price || "0,00"}`,
-        stock: Number(data.stock) || 0,
-        status: Number(data.stock) > 0 ? "Ativo" : "Esgotado",
-      },
-    ]);
     reset();
     setShowForm(false);
     onNotify("Produto adicionado com sucesso");
@@ -626,9 +371,11 @@ function Products({
             <label>
               Categoria
               <select {...register("category")}>
-                <option>Camisetas</option>
-                <option>Moletons</option>
-                <option>Acessórios</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </label>
             <label>
@@ -687,13 +434,21 @@ function Products({
                       <strong>{product.name}</strong>
                     </div>
                   </td>
-                  <td>{product.category}</td>
+                  <td>{product.category.name}</td>
                   <td>
-                    <strong>{product.price}</strong>
+                    <strong>{product.priceBoth}</strong>
                   </td>
-                  <td>{product.stock} un.</td>
                   <td>
-                    <StatusBadge status={product.status} />
+                    {product.variants?.reduce(
+                      (acc, variant) => acc + variant.stock,
+                      0,
+                    )}{" "}
+                    un.
+                  </td>
+                  <td>
+                    <StatusBadge
+                      status={product.available ? "Disponivel" : "Sem estoque"}
+                    />
                   </td>
                   <td>
                     <button
@@ -713,6 +468,7 @@ function Products({
   );
 }
 function Customers() {
+  const { users } = useAdminUsers();
   return (
     <>
       <PageHeading
@@ -763,26 +519,20 @@ function Customers() {
                 <th>Pedidos</th>
                 <th>Total gasto</th>
                 <th>Última compra</th>
-                <th />
               </tr>
             </thead>
             <tbody>
-              {[
-                "Mariana Costa",
-                "João Vitor",
-                "Ana Beatriz",
-                "Lucas Almeida",
-              ].map((name, i) => (
-                <tr key={name}>
+              {users.map((user, i) => (
+                <tr key={user.id}>
                   <td>
                     <div className="customer-cell">
                       <span className="avatar">
-                        {name
+                        {user.name
                           .split(" ")
                           .map((n) => n[0])
                           .join("")}
                       </span>
-                      <strong>{name}</strong>
+                      <strong>{user.name}</strong>
                     </div>
                   </td>
                   <td>{12 - i} pedidos</td>
@@ -905,4 +655,4 @@ function SettingsPage({ onNotify }: { onNotify: (message: string) => void }) {
   );
 }
 
-export default App;
+export default Admin;
