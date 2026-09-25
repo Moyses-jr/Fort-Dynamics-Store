@@ -18,15 +18,17 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <BrowserRouter>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <Admin />
-              </AdminRoute>
-            }
-          />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/admin"
+              element={
+                <AdminRoute>
+                  <Admin />
+                </AdminRoute>
+              }
+            />
+          </Routes>
         </BrowserRouter>
       </CartProvider>
     </AuthProvider>

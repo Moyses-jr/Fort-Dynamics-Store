@@ -40,7 +40,7 @@ export function useProducts(params?: {
   if (params?.available !== undefined) query.set('available', String(params.available))
   if (params?.limit) query.set('limit', String(params.limit))
 
-  const { data, error, isLoading } = useSWR<{ data: ApiProduct[]; meta: { total: number } }>(
+  const { data, mutate: refresh, error, isLoading } = useSWR<{ data: ApiProduct[]; meta: { total: number } }>(
     `/products?${query.toString()}`,
     fetcher,
     { revalidateOnFocus: false },
@@ -51,6 +51,7 @@ export function useProducts(params?: {
     total: data?.meta.total ?? 0,
     isLoading,
     error,
+    refresh,
   }
 }
 

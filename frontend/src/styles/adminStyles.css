@@ -130,29 +130,11 @@ button {
   flex-direction: column;
   gap: 17px;
 }
-.help-card {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  border-top: 1px solid #242726;
-  padding: 19px 4px 0;
-  color: #b9beb8;
-}
-.help-icon {
-  border: 1px solid #58605a;
-  border-radius: 50%;
-  width: 21px;
-  height: 21px;
-  text-align: center;
-  font-size: 13px;
-}
-.help-card strong,
 .profile strong {
   font-size: 11px;
   display: block;
   color: #d9ddd8;
 }
-.help-card small,
 .profile small {
   display: block;
   color: #767d76;

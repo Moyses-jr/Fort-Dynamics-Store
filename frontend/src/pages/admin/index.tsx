@@ -20,15 +20,24 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Check,
+  Edit2,
+  Trash2,
 } from "lucide-react";
 
 import "../../styles/adminStyles.css";
 import {
+  updateOrderStatus,
   useAdminOrders,
   useAdminStats,
   useAdminUsers,
 } from "../../hooks/useAdmin";
-import { ApiProduct, useProducts } from "../../hooks/useProducts";
+import {
+  ApiProduct,
+  createProduct,
+  deleteProduct,
+  updateProduct,
+  useProducts,
+} from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
 
 type Page =
@@ -98,13 +107,6 @@ function Admin() {
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <div className="help-card">
-            <span className="help-icon">?</span>
-            <div>
-              <strong>Precisa de ajuda?</strong>
-              <small>Fale com nosso suporte</small>
-            </div>
-          </div>
           <button className="profile">
             <span className="avatar">MC</span>
             <span className="profile-copy">
@@ -257,24 +259,167 @@ function Dashboard({
           trend="—"
         />
       </div>
-      {/* ... */}
-      <div className="mini-orders">
-        {orders.slice(0, 4).map((order) => (
-          <div className="mini-order" key={order.id}>
-            <span className="order-symbol">
-              <ShoppingBag size={15} />
-            </span>
+
+      <div className="dashboard-grid">
+        <section className="panel chart-panel">
+          <div className="panel-heading">
             <div>
-              <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
-              <small>{order.user.name}</small>
+              <h2>Visão geral</h2>
+              <p>Receita dos últimos 7 dias</p>
             </div>
-            <span className="order-value">
-              R$ {Number(order.total).toFixed(2)}
-            </span>
+            <button className="select-button">
+              Últimos 7 dias <ChevronDown size={15} />
+            </button>
           </div>
-        ))}
+          <div className="chart">
+            <div className="chart-y">
+              <span>R$ 5k</span>
+              <span>R$ 4k</span>
+              <span>R$ 3k</span>
+              <span>R$ 2k</span>
+              <span>R$ 1k</span>
+              <span>R$ 0</span>
+            </div>
+            <div className="chart-area">
+              <div className="grid-lines">
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+                <i />
+              </div>
+              <svg
+                viewBox="0 0 650 205"
+                preserveAspectRatio="none"
+                className="line-chart"
+              >
+                <defs>
+                  <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="#e1ff58" stopOpacity=".25" />
+                    <stop offset="100%" stopColor="#e1ff58" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M0,160 C35,148 55,165 90,139 S145,151 180,107 S235,119 270,91 S320,120 365,76 S420,96 455,58 S500,88 545,53 S600,34 650,10 L650,205 L0,205Z"
+                  fill="url(#fill)"
+                />
+                <path
+                  d="M0,160 C35,148 55,165 90,139 S145,151 180,107 S235,119 270,91 S320,120 365,76 S420,96 455,58 S500,88 545,53 S600,34 650,10"
+                  fill="none"
+                  stroke="#d8f957"
+                  strokeWidth="3"
+                />
+              </svg>
+              <div className="chart-x">
+                <span>10 Jun</span>
+                <span>11 Jun</span>
+                <span>12 Jun</span>
+                <span>13 Jun</span>
+                <span>14 Jun</span>
+                <span>15 Jun</span>
+                <span>16 Jun</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="panel orders-panel">
+          <div className="panel-heading">
+            <div>
+              <h2>Pedidos recentes</h2>
+              <p>Últimas movimentações</p>
+            </div>
+            <button
+              className="text-button"
+              onClick={() => onNavigate("pedidos")}
+            >
+              Ver todos <ArrowUpRight size={15} />
+            </button>
+          </div>
+          <div className="mini-orders">
+            {orders.slice(0, 4).map((order) => (
+              <div className="mini-order" key={order.id}>
+                <span className="order-symbol">
+                  <ShoppingBag size={15} />
+                </span>
+                <div>
+                  <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
+                  <small>{order.user.name}</small>
+                </div>
+                <span className="order-value">
+                  R$ {Number(order.total).toFixed(2)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="panel category-panel">
+          <div className="panel-heading">
+            <div>
+              <h2>Produtos mais vendidos</h2>
+              <p>Desempenho por categoria</p>
+            </div>
+            <button
+              className="text-button"
+              onClick={() => onNotify("Relatório exportado")}
+            >
+              Exportar <ArrowUpRight size={15} />
+            </button>
+          </div>
+          <div className="category-list">
+            <CategoryRow
+              label="Camisetas"
+              value="58%"
+              amount="142 vendas"
+              width="58%"
+              color="lime"
+            />
+            <CategoryRow
+              label="Moletons"
+              value="24%"
+              amount="58 vendas"
+              width="24%"
+              color="purple"
+            />
+            <CategoryRow
+              label="Acessórios"
+              value="18%"
+              amount="44 vendas"
+              width="18%"
+              color="orange"
+            />
+          </div>
+        </section>
       </div>
     </>
+  );
+}
+function CategoryRow({
+  label,
+  value,
+  amount,
+  width,
+  color,
+}: {
+  label: string;
+  value: string;
+  amount: string;
+  width: string;
+  color: string;
+}) {
+  return (
+    <div className="category-row">
+      <div className="category-meta">
+        <strong>{label}</strong>
+        <span>{amount}</span>
+        <b>{value}</b>
+      </div>
+      <div className={`progress ${color}`}>
+        <i style={{ width }} />
+      </div>
+    </div>
   );
 }
 function StatusBadge({ status }: { status: string }) {
@@ -285,7 +430,26 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 function Orders({ onNotify }: { onNotify: (message: string) => void }) {
-  const { orders } = useAdminOrders();
+  const { orders, refresh } = useAdminOrders();
+
+  const STATUS_OPTIONS = [
+    "pending",
+    "confirmed",
+    "production",
+    "shipping",
+    "delivered",
+    "cancelled",
+  ] as const;
+
+  const handleStatusChange = async (id: string, status: string) => {
+    try {
+      await updateOrderStatus(id, { status });
+      await refresh();
+      onNotify("Status do pedido atualizado");
+    } catch {
+      onNotify("Erro ao atualizar status");
+    }
+  };
   return (
     <>
       {/* ...cabeçalho igual... */}
@@ -302,15 +466,17 @@ function Orders({ onNotify }: { onNotify: (message: string) => void }) {
                 <strong>R$ {Number(order.total).toFixed(2)}</strong>
               </td>
               <td>
-                <StatusBadge status={order.status} />
-              </td>
-              <td>
-                <button
-                  className="row-menu"
-                  onClick={() => onNotify(`Pedido selecionado`)}
+                <select
+                  className="filter-button"
+                  value={order.status}
+                  onChange={(e) => handleStatusChange(order.id, e.target.value)}
                 >
-                  <MoreHorizontal size={18} />
-                </button>
+                  {STATUS_OPTIONS.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
               </td>
             </tr>
           ))}
@@ -328,13 +494,63 @@ function Products({
   setShowForm: (open: boolean) => void;
   onNotify: (message: string) => void;
 }) {
-  const { categories } = useCategories();
-  const { products: productList, isLoading } = useProducts({ limit: 100 });
   const { register, handleSubmit, reset } = useForm<ProductForm>();
-  const submit = (data: ProductForm) => {
-    reset();
-    setShowForm(false);
-    onNotify("Produto adicionado com sucesso");
+  const { categories } = useCategories();
+  const {
+    products: apiProducts,
+    isLoading,
+    refresh,
+  } = useProducts({ limit: 100 });
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id);
+      await refresh();
+      onNotify("Produto removido");
+    } catch {
+      onNotify("Erro ao remover produto");
+    }
+  };
+
+  const handleToggleAvailable = async (product: ApiProduct) => {
+    try {
+      await updateProduct(product.id, { available: !product.available });
+      await refresh();
+      onNotify(product.available ? "Produto desativado" : "Produto ativado");
+    } catch {
+      onNotify("Erro ao atualizar produto");
+    }
+  };
+
+  const submit = async (data: ProductForm) => {
+    const category = categories.find((c) => c.name === data.category);
+    try {
+      await createProduct({
+        categoryId: category?.id ?? categories[0]?.id ?? "",
+        name: data.name,
+        description: data.name,
+        fabricType: "Padrão",
+        priceFront: Number(data.price) || 0,
+        priceBack: Number(data.price) || 0,
+        priceBoth: Number(data.price) || 0,
+        images: [
+          { url: "https://placehold.co/600x600", isPrimary: true, order: 0 },
+        ],
+        variants: [
+          {
+            variantId: crypto.randomUUID(),
+            color: "Preto",
+            size: "M",
+            stock: Number(data.stock) || 0,
+          },
+        ],
+      });
+      reset();
+      setShowForm(false);
+      onNotify("Produto adicionado com sucesso");
+    } catch {
+      onNotify("Erro ao adicionar produto");
+    }
   };
   return (
     <>
@@ -405,7 +621,7 @@ function Products({
         <div className="table-toolbar">
           <div>
             <h2>Todos os produtos</h2>
-            <p>{productList.length} produtos cadastrados</p>
+            <p>{apiProducts.length} produtos cadastrados</p>
           </div>
           <button className="filter-button">
             Todas as categorias <ChevronDown size={15} />
@@ -424,7 +640,7 @@ function Products({
               </tr>
             </thead>
             <tbody>
-              {productList.map((product) => (
+              {apiProducts.map((product) => (
                 <tr key={product.name}>
                   <td>
                     <div className="product-cell">
@@ -453,9 +669,17 @@ function Products({
                   <td>
                     <button
                       className="row-menu"
-                      onClick={() => onNotify("Opções do produto abertas")}
+                      title={product.available ? "Desativar" : "Ativar"}
+                      onClick={() => handleToggleAvailable(product)}
                     >
-                      <MoreHorizontal size={18} />
+                      <Edit2 size={16} />
+                    </button>
+                    <button
+                      className="row-menu"
+                      title="Excluir"
+                      onClick={() => handleDelete(product.id)}
+                    >
+                      <Trash2 size={16} />
                     </button>
                   </td>
                 </tr>
@@ -535,11 +759,13 @@ function Customers() {
                       <strong>{user.name}</strong>
                     </div>
                   </td>
-                  <td>{12 - i} pedidos</td>
+                  <td>{user._count.orders} pedidos</td>
                   <td>
-                    <strong>R$ {[1280, 940, 760, 540][i]},00</strong>
+                    <strong>—</strong>
                   </td>
-                  <td>{i === 0 ? "Hoje" : `${i + 1} dias atrás`}</td>
+                  <td>
+                    {new Date(user.createdAt).toLocaleDateString("pt-BR")}
+                  </td>
                   <td>
                     <button className="row-menu">
                       <MoreHorizontal size={18} />
@@ -555,6 +781,8 @@ function Customers() {
   );
 }
 function Artwork({ onNotify }: { onNotify: (message: string) => void }) {
+  // TODO: sem model "Art" no Prisma schema — não há endpoint de backend.
+  // Mantido como mock até o schema/endpoint serem definidos.
   return (
     <>
       <PageHeading
@@ -597,6 +825,8 @@ function Artwork({ onNotify }: { onNotify: (message: string) => void }) {
   );
 }
 function SettingsPage({ onNotify }: { onNotify: (message: string) => void }) {
+  // TODO: sem model "Settings" no Prisma schema — não há endpoint de backend.
+  // Mantido como mock até o schema/endpoint serem definidos.
   return (
     <>
       <PageHeading
