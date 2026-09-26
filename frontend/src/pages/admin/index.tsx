@@ -102,7 +102,6 @@ function Admin() {
             >
               <Icon size={18} />
               <span>{label}</span>
-              {id === "pedidos" && <span className="nav-count">4</span>}
             </button>
           ))}
         </nav>
@@ -452,36 +451,64 @@ function Orders({ onNotify }: { onNotify: (message: string) => void }) {
   };
   return (
     <>
-      {/* ...cabeçalho igual... */}
-      <table>
-        <tbody>
-          {orders.map((order) => (
-            <tr key={order.id}>
-              <td>
-                <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
-              </td>
-              <td>{order.user.name}</td>
-              <td>{new Date(order.createdAt).toLocaleDateString("pt-BR")}</td>
-              <td>
-                <strong>R$ {Number(order.total).toFixed(2)}</strong>
-              </td>
-              <td>
-                <select
-                  className="filter-button"
-                  value={order.status}
-                  onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                >
-                  {STATUS_OPTIONS.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <PageHeading
+        title="Pedidos"
+        description="Acompanhe e gerencie todos os pedidos da sua loja."
+        action={
+          <button
+            className="primary-button"
+            onClick={() => onNotify("Filtro de pedidos aberto")}
+          >
+            <Search size={17} /> Buscar pedido
+          </button>
+        }
+      />
+      <section className="panel table-panel">
+        <div className="table-toolbar">
+          <div className="search-field">
+            <Search size={17} />
+            <input placeholder="Buscar por pedido ou cliente..." />
+          </div>
+          <button className="filter-button">
+            Todos os status <ChevronDown size={15} />
+          </button>
+        </div>
+        <div className="table-scroll">
+          <table>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td>
+                    <strong>#{order.id.slice(0, 8).toUpperCase()}</strong>
+                  </td>
+                  <td>{order.user.name}</td>
+                  <td>
+                    {new Date(order.createdAt).toLocaleDateString("pt-BR")}
+                  </td>
+                  <td>
+                    <strong>R$ {Number(order.total).toFixed(2)}</strong>
+                  </td>
+                  <td>
+                    <select
+                      className="filter-button"
+                      value={order.status}
+                      onChange={(e) =>
+                        handleStatusChange(order.id, e.target.value)
+                      }
+                    >
+                      {STATUS_OPTIONS.map((s) => (
+                        <option key={s} value={s}>
+                          {s}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
     </>
   );
 }
@@ -496,11 +523,7 @@ function Products({
 }) {
   const { register, handleSubmit, reset } = useForm<ProductForm>();
   const { categories } = useCategories();
-  const {
-    products: apiProducts,
-    isLoading,
-    refresh,
-  } = useProducts({ limit: 100 });
+  const { products: apiProducts, refresh } = useProducts({ limit: 100 });
 
   const handleDelete = async (id: string) => {
     try {
