@@ -263,6 +263,84 @@ async function main() {
   })
   console.log('✅ Cupom criado: FDSTORE10 (10% de desconto)')
 
+  // ── Clientes + pedidos de exemplo (para o Dashboard admin) ──
+  const clientesSeed = [
+    { name: 'Rafael Silva', email: 'rafael.silva@fdstore.com' },
+    { name: 'Mariana Costa', email: 'mariana.costa@fdstore.com' },
+    { name: 'Lucas Ferreira', email: 'lucas.ferreira@fdstore.com' },
+  ]
+
+  const senhaCliente = await bcrypt.hash('cliente123', 12)
+  const produtosCriados = await prisma.product.findMany({
+    include: { variants: true },
+    take: 6,
+  })
+
+  for (const c of clientesSeed) {
+    const cliente = await prisma.user.upsert({
+      where: { email: c.email },
+      update: {},
+      create: {
+        name: c.name,
+        email: c.email,
+        passwordHash: senhaCliente,
+        role: UserRole.CUSTOMER,
+        isActive: true,
+      },
+    })
+
+    const endereco = await prisma.address.upsert({
+      where: { id: `seed-addr-${cliente.id}` },
+      update: {},
+      create: {
+        id: `seed-addr-${cliente.id}`,
+        userId: cliente.id,
+        street: 'Rua Exemplo',
+        number: '100',
+        neighborhood: 'Centro',
+        city: 'São Paulo',
+        state: 'SP',
+        zipCode: '01000000',
+        isDefault: true,
+      },
+    })
+
+    const produto = produtosCriados[Math.floor(Math.random() * produtosCriados.length)]
+    const variante = produto?.variants[0]
+    if (!produto || !variante) continue
+
+    const existente = await prisma.order.findFirst({ where: { userId: cliente.id } })
+    if (existente) continue
+
+    const subtotal = Number(produto.priceBoth)
+    await prisma.order.create({
+      data: {
+        userId: cliente.id,
+        addressId: endereco.id,
+        subtotal,
+        shippingCost: 0,
+        total: subtotal,
+        status: ['pending', 'confirmed', 'production'][Math.floor(Math.random() * 3)],
+        paymentMethod: 'pix',
+        paymentStatus: 'paid',
+        items: {
+          create: {
+            productId: produto.id,
+            variantId: variante.id,
+            quantity: 1,
+            unitPrice: subtotal,
+            subtotal,
+            productName: produto.name,
+            color: variante.color,
+            size: variante.size,
+          },
+        },
+        statusHistory: { create: { status: 'pending', note: 'Pedido de exemplo (seed)' } },
+      },
+    })
+  }
+  console.log('✅ Clientes e pedidos de exemplo criados')
+
   console.log('\n🎉 Seed finalizado com sucesso!')
 }
 

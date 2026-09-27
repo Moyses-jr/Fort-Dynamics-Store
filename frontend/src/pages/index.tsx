@@ -16,7 +16,7 @@ import { UniformCustomizer } from "../components/UniformCustomizer";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import "../styles/homeStyle.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const { user, isLoggedIn, logout } = useAuth();

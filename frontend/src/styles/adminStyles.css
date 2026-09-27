@@ -53,7 +53,7 @@ button {
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  background: #dcf65a;
+  background: #f5c542;
   color: #111;
   font-size: 12px;
   letter-spacing: -0.08em;
@@ -109,7 +109,7 @@ button {
 .nav-item:hover,
 .nav-item.active {
   background: #1d231d;
-  color: #e4f568;
+  color: #f5c542;
 }
 .nav-item.active {
   font-weight: 600;
@@ -117,7 +117,7 @@ button {
 .nav-count {
   margin-left: auto;
   color: #1a1d1a;
-  background: #d8f657;
+  background: #f5c542;
   border-radius: 20px;
   min-width: 21px;
   text-align: center;
@@ -208,7 +208,7 @@ button {
 .notification-dot {
   width: 5px;
   height: 5px;
-  background: #d9f657;
+  background: #f5c542;
   border-radius: 50%;
   position: absolute;
   right: 2px;
@@ -217,8 +217,8 @@ button {
 .top-avatar {
   width: 32px;
   height: 32px;
-  background: #d5ef5a;
-  color: #1d241a;
+  background: #f5c542;
+  color: #000;
 }
 .mobile-menu {
   display: none;
@@ -258,12 +258,12 @@ button {
   padding: 11px 15px;
 }
 .primary-button {
-  background: #d9f653;
+  background: #f5c542;
   color: #171b13;
-  border: 1px solid #d9f653;
+  border: 1px solid #f5c542;
 }
 .primary-button:hover {
-  background: #efff91;
+  background: E0A81F;
 }
 .secondary-button,
 .filter-button,
@@ -295,7 +295,7 @@ button {
   display: grid;
   place-items: center;
   background: #222b1e;
-  color: #d7f655;
+  color: #f5c542;
   margin-bottom: 17px;
 }
 .stat-label {
@@ -316,7 +316,7 @@ button {
   margin-top: 8px;
 }
 .trend.positive {
-  color: #a9d34e;
+  color: #f5c542;
 }
 .trend.negative {
   color: #df8e79;
@@ -398,7 +398,7 @@ button {
   display: flex;
   gap: 5px;
   align-items: center;
-  color: #d2ef58;
+  color: #f5c542;
   background: none;
   border: 0;
   font-size: 11px;
@@ -420,7 +420,7 @@ button {
   width: 31px;
   height: 31px;
   background: #242a22;
-  color: #d5f15b;
+  color: #f5c542;
   border-radius: 7px;
 }
 .mini-order div {
@@ -462,7 +462,7 @@ button {
 }
 .category-meta b {
   text-align: right;
-  color: #d8f558;
+  color: #f5c542;
   font-weight: 600;
 }
 .progress {
@@ -475,7 +475,7 @@ button {
   height: 100%;
   display: block;
   border-radius: 20px;
-  background: #d8f558;
+  background: #f5c542;
 }
 .progress.purple i {
   background: #9c7de0;
@@ -579,8 +579,8 @@ td:last-child {
 .status.pago,
 .status.ativo,
 .status.enviado {
-  color: #b4e24b;
-  background: #202c1c;
+  color: #f5c542;
+  background: #2b2411;
 }
 .status.em-produção {
   color: #d9c07a;
@@ -607,7 +607,7 @@ td:last-child {
   height: 30px;
   border-radius: 6px;
   background: #232922;
-  color: #d7f45b;
+  color: #f5c542;
 }
 .customer-cell .avatar {
   background: #2c4e50;
@@ -724,8 +724,8 @@ td:last-child {
 }
 .settings-nav button.settings-active,
 .settings-nav button:hover {
-  background: #202920;
-  color: #d8f557;
+  background: #2b2411;
+  color: #f5c542;
 }
 .settings-form {
   display: flex;
@@ -743,8 +743,8 @@ td:last-child {
   position: fixed;
   right: 25px;
   bottom: 25px;
-  background: #d9f653;
-  color: #171b13;
+  background: #f5c542;
+  color: #000;
   border-radius: 7px;
   padding: 12px 16px;
   display: flex;

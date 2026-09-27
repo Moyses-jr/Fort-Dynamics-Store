@@ -22,6 +22,7 @@ import {
   Check,
   Edit2,
   Trash2,
+  LogOut,
 } from "lucide-react";
 
 import "../../styles/adminStyles.css";
@@ -39,6 +40,8 @@ import {
   useProducts,
 } from "../../hooks/useProducts";
 import { useCategories } from "../../hooks/useCategories";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 type Page =
   | "dashboard"
@@ -69,13 +72,26 @@ function Admin() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showProductForm, setShowProductForm] = useState(false);
   const [toast, setToast] = useState("");
-  // const [productList, setProductList] = useState(products);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const initials = (user?.name ?? "AD")
+    .split(" ")
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   const notify = (message: string) => {
     setToast(message);
     window.setTimeout(() => setToast(""), 2800);
   };
-  const navigate = (next: Page) => {
+  const navigateLabel = (next: Page) => {
     setPage(next);
     setSidebarOpen(false);
   };
@@ -98,7 +114,7 @@ function Admin() {
             <button
               key={id}
               className={`nav-item ${page === id ? "active" : ""}`}
-              onClick={() => navigate(id)}
+              onClick={() => navigateLabel(id)}
             >
               <Icon size={18} />
               <span>{label}</span>
@@ -106,13 +122,13 @@ function Admin() {
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <button className="profile">
-            <span className="avatar">MC</span>
+          <button className="profile" onClick={handleLogout} title="Sair">
+            <span className="avatar">{initials}</span>
             <span className="profile-copy">
-              <strong>Marcos Costa</strong>
-              <small>Administrador</small>
+              <strong>{user?.name ?? "Administrador"}</strong>
+              <small>{user?.email ?? "Administrador"}</small>
             </span>
-            <MoreHorizontal size={18} />
+            <LogOut size={18} />
           </button>
         </div>
       </aside>
@@ -139,12 +155,14 @@ function Admin() {
               <Bell size={19} />
               <span className="notification-dot" />
             </button>
-            <div className="top-avatar">MC</div>
+            <div className="top-avatar" title={user?.name}>
+              {initials}
+            </div>
           </div>
         </header>
         <div className="page-wrap">
           {page === "dashboard" && (
-            <Dashboard onNavigate={navigate} onNotify={notify} />
+            <Dashboard onNavigate={navigateLabel} onNotify={notify} />
           )}
           {page === "pedidos" && <Orders onNotify={notify} />}
           {page === "produtos" && (
@@ -300,8 +318,8 @@ function Dashboard({
               >
                 <defs>
                   <linearGradient id="fill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#e1ff58" stopOpacity=".25" />
-                    <stop offset="100%" stopColor="#e1ff58" stopOpacity="0" />
+                    <stop offset="0%" stopColor="#F5C542" stopOpacity=".25" />
+                    <stop offset="100%" stopColor="#F5C542" stopOpacity="0" />
                   </linearGradient>
                 </defs>
                 <path
@@ -311,7 +329,7 @@ function Dashboard({
                 <path
                   d="M0,160 C35,148 55,165 90,139 S145,151 180,107 S235,119 270,91 S320,120 365,76 S420,96 455,58 S500,88 545,53 S600,34 650,10"
                   fill="none"
-                  stroke="#d8f957"
+                  stroke="#F5C542"
                   strokeWidth="3"
                 />
               </svg>
