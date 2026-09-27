@@ -229,9 +229,14 @@ function Dashboard({
   const { stats } = useAdminStats();
   const { orders } = useAdminOrders();
 
+  const topProducts = stats?.topProducts ?? [];
+  const totalTopQty = topProducts.reduce(
+    (sum, p) => sum + (p._sum.quantity ?? 0),
+    0,
+  );
+
   return (
     <>
-      {/* ...cabeçalho igual... */}
       <div className="stat-grid">
         <StatCard
           icon={CircleDollarSign}
@@ -358,7 +363,7 @@ function Dashboard({
           <div className="panel-heading">
             <div>
               <h2>Produtos mais vendidos</h2>
-              <p>Desempenho por categoria</p>
+              <p>Top 5 produtos por quantidade vendida</p>
             </div>
             <button
               className="text-button"
@@ -368,27 +373,28 @@ function Dashboard({
             </button>
           </div>
           <div className="category-list">
-            <CategoryRow
-              label="Camisetas"
-              value="58%"
-              amount="142 vendas"
-              width="58%"
-              color="lime"
-            />
-            <CategoryRow
-              label="Moletons"
-              value="24%"
-              amount="58 vendas"
-              width="24%"
-              color="purple"
-            />
-            <CategoryRow
-              label="Acessórios"
-              value="18%"
-              amount="44 vendas"
-              width="18%"
-              color="orange"
-            />
+            {topProducts.length === 0 ? (
+              <p style={{ color: "#7c837d", fontSize: 12 }}>
+                Sem vendas registradas ainda.
+              </p>
+            ) : (
+              topProducts.map((p, i) => {
+                const qty = p._sum.quantity ?? 0;
+                const pct =
+                  totalTopQty > 0 ? Math.round((qty / totalTopQty) * 100) : 0;
+                const colors = ["lime", "purple", "orange", "lime", "purple"];
+                return (
+                  <CategoryRow
+                    key={p.productName}
+                    label={p.productName}
+                    value={`${pct}%`}
+                    amount={`${qty} vendas`}
+                    width={`${pct}%`}
+                    color={colors[i % colors.length]}
+                  />
+                );
+              })
+            )}
           </div>
         </section>
       </div>
