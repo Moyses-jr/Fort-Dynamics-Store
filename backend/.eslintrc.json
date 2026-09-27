@@ -4,7 +4,7 @@
   "parserOptions": {
     "ecmaVersion": 2022,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./backend/tsconfig.json"
   },
   "plugins": ["@typescript-eslint"],
   "extends": [
@@ -29,5 +29,13 @@
   "env": {
     "node": true,
     "es2022": true
-  }
+  },
+  "overrides": [
+    {
+      "files": ["prisma/**/*.ts"],
+      "parserOptions": {
+        "project": false
+      }
+    }
+  ]
 }

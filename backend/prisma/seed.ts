@@ -1,5 +1,6 @@
-// prisma/seed.ts
+/// <reference types="node" />
 import { PrismaClient, UserRole } from '@prisma/client'
+import { env } from '../src/config/env'
 import bcrypt from 'bcryptjs'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -234,19 +235,19 @@ async function main() {
   }
 
   // ── Admin padrão ────────────────────────────────────────────
-  const adminPassword = await bcrypt.hash('admin123', 12)
+  const adminPassword = await bcrypt.hash(env.ADMIN_SEED_PASSWORD, 12)
   await prisma.user.upsert({
-    where: { email: 'admin@fdstore.com.br' },
+    where: { email: env.ADMIN_SEED_EMAIL },
     update: {},
     create: {
-      name: 'AdminFD',
-      email: 'adminFD@fdstore.com',
+      name: env.ADMIN_SEED_NAME,
+      email: env.ADMIN_SEED_EMAIL,
       passwordHash: adminPassword,
       role: UserRole.ADMIN,
       isActive: true,
     },
   })
-  console.log('✅ Admin criado: admin@fdstore.com.br / admin123')
+  console.log('✅ Admin criado: ' + env.ADMIN_SEED_EMAIL)
 
   // ── Cupom de exemplo ────────────────────────────────────────
   await prisma.coupon.upsert({

@@ -7,6 +7,10 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3333),
   FRONTEND_URL: z.string().url(),
 
+  ADMIN_SEED_NAME: z.string().default('Luam dos Santos'),
+  ADMIN_SEED_EMAIL: z.string().email().default('luamgsantos45@gmail.com'),
+  ADMIN_SEED_PASSWORD: z.string().min(12),
+
   DATABASE_URL: z.string().min(1),
   REDIS_URL: z.string().min(1),
 
@@ -40,7 +44,7 @@ const parsed = envSchema.safeParse(process.env)
 if (!parsed.success) {
   console.error('❌ Variáveis de ambiente inválidas:')
   console.error(parsed.error.flatten().fieldErrors)
-  process.exit(1)
+  throw new Error('Variáveis de ambiente inválidas')
 }
 
 export const env = parsed.data
