@@ -32,7 +32,7 @@
   },
   "overrides": [
     {
-      "files": ["prisma/**/*.ts"],
+      "files": ["prisma/**/*.ts", "./*.ts"],
       "parserOptions": {
         "project": false
       }

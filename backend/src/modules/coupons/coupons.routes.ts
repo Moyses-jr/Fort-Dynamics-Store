@@ -71,10 +71,13 @@ couponsRouter.post(
   },
 )
 
+const updateCouponSchema = createCouponSchema.partial()
+
 couponsRouter.patch(
   '/:id',
   authMiddleware,
   adminMiddleware,
+  validate(updateCouponSchema),
   async (req: Request, res: Response) => {
     const coupon = await prisma.coupon.findUnique({ where: { id: req.params.id } })
     if (!coupon) throw new NotFoundError('Cupom')

@@ -258,7 +258,7 @@ function Dashboard({
       <div className="stat-grid">
         <StatCard
           icon={CircleDollarSign}
-          label="Vendas no mês"
+          label="Receita total"
           value={`R$ ${(stats?.totalRevenue ?? 0).toFixed(2)}`}
           trend="—"
         />

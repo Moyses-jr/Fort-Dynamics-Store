@@ -61,7 +61,7 @@ npm run dev
 
 ```
 Email: admin@fdstore.com.br
-Senha: admin123
+Senha: 123
 ```
 
 ## Endpoints principais
